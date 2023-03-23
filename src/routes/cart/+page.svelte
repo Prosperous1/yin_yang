@@ -1,3 +1,3 @@
-<main>
-    <p>Cart page</p>
-</main>
+<div>
+	<h1>Корзина</h1>
+</div>

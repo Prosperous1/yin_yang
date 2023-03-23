@@ -1,10 +1,5 @@
-@font-face {
-    font-family: Nunito, sans-serif;
-    src: url("static/fonts/Nunito-VariableFont_wght.ttf");
-}
-
 html {
-    font-family: Nunito, sans-serif;
+    font-family: Overpass, sans-serif;
 }
 /**
 CSS file for general use, html, etc.
