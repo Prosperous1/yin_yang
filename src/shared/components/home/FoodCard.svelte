@@ -13,7 +13,9 @@
 	<button class="like_btn">
 		<img src="icons/ui/heart.svg" alt="Add to Favourite">
 	</button>
-	<button class="price_btn">{price} ₽</button>
+	<button class="price_btn">
+		<p>{price} ₽</p>
+	</button>
 </div>
 
 <style>
