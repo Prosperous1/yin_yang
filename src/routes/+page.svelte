@@ -93,6 +93,8 @@ const foodItems = [
 			<ConstructorCard
 				title="Пицца на свой вкус"
 				image="icons/ui/bg_pizza.svg"
+				notReversed="1"
+				column="column"
 				description="/// ДИАМЕТР 33 см. // ОСНОВА ИЗ МЕНЮ / ДОБАВКИ ПО ВКУСУ"/>
 			<p>&</p>
 			<ConstructorCard
@@ -103,7 +105,7 @@ const foodItems = [
 				description="ОБЪЁМ 300 мл. \\\ Цена: 160 ₽ \\ ДОБАВКИ ПО ВКУСУ \"/>
 		</div>
 	</div>
-	<div>
+	<div id="menu">
 		<div class="menu_heading">
 			<SectionHeading title="Меню" icon="icons/ui/menu.svg" --font-size="36px"/>
 			<Filter filterItems={filterItems}/>
@@ -241,6 +243,10 @@ const foodItems = [
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
+	}
+
+	#menu,  {
+		scroll-margin-top: 40px;
 	}
 </style>
 

@@ -10,6 +10,8 @@
 
 html {
     font-family: Overpass, sans-serif;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
 }
 
 body {
@@ -32,4 +34,5 @@ a {
 button {
 	border: none;
 	font-family: Overpass;
+	cursor: pointer;
 }

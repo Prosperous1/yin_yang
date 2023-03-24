@@ -8,12 +8,12 @@
 			<nav>
 				<ul>
 					<li>
-						<a href="/">Меню</a>
+						<a href="/#menu">Меню</a>
 					</li>
-					<ListItem link="#pizza" title="Пицца"/>
-					<ListItem link="#sushi" title="Суши"/>
-					<ListItem link="#snacks" title="Снэки"/>
-					<ListItem link="#wok" title="Вок"/>
+					<ListItem link="/#pizza" title="Пицца"/>
+					<ListItem link="/#sushi" title="Суши"/>
+					<ListItem link="/#snacks" title="Снэки"/>
+					<ListItem link="/#wok" title="Вок"/>
 				</ul>
 				<ul>
 					<li>

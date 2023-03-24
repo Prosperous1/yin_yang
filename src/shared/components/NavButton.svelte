@@ -36,11 +36,13 @@
 		height: 46px;
 
 		&:hover {
-			width: 150px;
+			width: 160px;
+			background: rgba(211, 211, 211, 0.40);
 		}
 
 		p {
 			text-align: center;
+			padding-right: 10px;
 		}
 	}
 </style>

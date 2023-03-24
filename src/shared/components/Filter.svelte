@@ -4,23 +4,33 @@
 
 <div>
 	{#each filterItems as item}
-		<p>{item}</p>
+		<button>
+			{item}
+		</button>
 	{/each}
 </div>
 
-<style>
+<style lang="scss">
 	div {
 		display: flex;
 		gap: 24px;
 	}
-	p{
+
+	button {
 		padding: 8px 23px;
 		font-weight: 800;
 		font-size: 20px;
 
+		color: #636363;
+
 		background: #EFEFEF;
 		border-radius: 8px;
 
-		box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.25);
+		transition: .3s;
+
+		&:hover {
+			box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.05);
+			background: #bbbbbb;
+		}
 	}
 </style>
