@@ -19,6 +19,9 @@
 
 <style lang="scss">
 	nav {
+		max-width: 1240px;
+		margin: 0 auto;
+		padding: 40px 40px 0 40px;
 		display: flex;
 		align-items: center;
 

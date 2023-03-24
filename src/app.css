@@ -2,10 +2,19 @@ html {
     font-family: Overpass, sans-serif;
 }
 
+body {
+	margin: 0;
+}
+
 /**
 CSS file for general use, html, etc.
  */
 
 a {
 	display: flex;
+
+	color: rgba(255, 255, 255, 0.80);
+	font-weight: 700;
+	font-size: 18px;
+	text-decoration: none;
 }
