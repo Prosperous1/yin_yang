@@ -1,6 +1,11 @@
 html {
     font-family: Overpass, sans-serif;
 }
+
 /**
 CSS file for general use, html, etc.
  */
+
+a {
+	display: flex;
+}
