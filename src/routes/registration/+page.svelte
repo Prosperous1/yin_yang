@@ -6,9 +6,9 @@
 	let password = ''
 	let error = null
 
-	async function handleLogin(event) {
+	async function handleSignup(event) {
 		event.preventDefault()
-		const { user, error: authError } = await supabase.auth.signIn({
+		const { user, error: authError } = await supabase.auth.signUp({
 			email,
 			password,
 		})
@@ -21,8 +21,8 @@
 </script>
 
 <main>
-	<h1>Профиль</h1>
-	<form on:submit={handleLogin}>
+	<h1>Зарегистрироваться</h1>
+	<form on:submit={handleSignup}>
 		<label>
 			Почта
 			<input type="email" bind:value={email} />
@@ -31,10 +31,9 @@
 			Пароль
 			<input type="password" bind:value={password} />
 		</label>
-		<button type="submit">Логин</button>
-		<a href="registration" style="color: black">Регистрация</a>
+		<button type="submit">Зарегистрироваться</button>
 	</form>
 	{#if error}
-		<p>{Ошибка}</p>
+		<p>{error}</p>
 	{/if}
 </main>
