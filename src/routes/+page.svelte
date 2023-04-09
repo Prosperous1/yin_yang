@@ -7,42 +7,13 @@ import FoodCard from "../shared/components/home/FoodCard.svelte";
 
 const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
 
-const foodItems = [
-	{
-		count: 24,
-		title: "Сет №1",
-		weight: 460,
-		image: "image/food_pic.jpg",
-		description: "Цезарь 1/2, шиитаке - S,запеченный классик - 1. ",
-		price: 440,
-	},
-	{
-		count: 24 ,
-		title: "Сет №1",
-		weight: 460,
-		image: "image/food_pic.jpg",
-		description: "Цезарь 1/2, шиитаке - S,запеченный классик - 1. ",
-		price: 440,
-	},
-	{
-		count: 24 ,
-		title: "Сет №1",
-		weight: 460,
-		image: "image/food_pic.jpg",
-		description: "Цезарь 1/2, шиитаке - S,запеченный классик - 1. ",
-		price: 440,
-	},
-	{
-		count: 24 ,
-		title: "Сет №1",
-		weight: 460,
-		image: "image/food_pic.jpg",
-		description: "Цезарь 1/2, шиитаке - S,запеченный классик - 1. ",
-		price: 440,
-	},
-]
+export let data;
+let { products } = data;
+$: ({ products } = data);
 
+console.log(products)
 </script>
+
 
 <section>
 	<div class="section">
@@ -111,14 +82,15 @@ const foodItems = [
 			<Filter filterItems={filterItems}/>
 		</div>
 		<div class="food_items_container">
-			{#each foodItems as {count, title, weight, image, description, price}}
+			{#each products as {count, title, weight, image_url, description, price, category}}
 				<FoodCard
-					count={count}
-					title={title}
-					weight={weight}
-					image={image}
-					description={description}
-					price={price}
+					{count}
+					{title}
+					{weight}
+					{image_url}
+					{description}
+					{price}
+					{category}
 				/>
 			{/each}
 		</div>

@@ -1,10 +1,13 @@
 <script>
-	export let title, description, count, weight, price, image;
+	export let title, description, count, weight, price, image_url, category;
 </script>
 
 <div class="container">
-	<img src={image} alt="Product Image">
-	<p class="count">{count} шт.</p>
+	<img src={image_url} alt="Product Image">
+	<div class="over_pic">
+		<p class="count">{count} шт.</p>
+		<p class="count">{category.title}</p>
+	</div>
 	<div class="card_inner">
 		<div class="title_bar">
 			<p class="title">{title}</p>
@@ -57,11 +60,6 @@
 	}
 
 	.count {
-		position: absolute;
-
-		top: 125px;
-		left: 26px;
-
 		padding: 8px 12px;
 
 		font-size: 18px;
@@ -70,6 +68,15 @@
 		background: rgba(21, 21, 21, 0.85);
 		backdrop-filter: blur(2px);
 		border-radius: 9px;
+	}
+
+	.over_pic {
+		display: flex;
+		gap: 20px;
+		position: absolute;
+
+		top: 125px;
+		left: 26px;
 	}
 
 	.title {

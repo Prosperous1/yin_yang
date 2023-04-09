@@ -1,21 +1,40 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 
+	import PopUp from "./service/PopUp.svelte";
+
+
 	let visible = false;
 
 	function toggleVisibility() {
 		visible = !visible;
 	}
 
-	export let link, title, icon, color;
+	let isOpen = false;
+
+	function swapPopup() {
+		isOpen = !isOpen;
+	}
+
+	export let link, title, icon, color, isButton;
 </script>
 
-<a href="{link}" class="btn_container" on:mouseenter={toggleVisibility} on:mouseleave={toggleVisibility}>
-	<img src={icon} alt={link}>
-	{#if visible}
-		<p style="color: {color}" transition:fly={{ x: -50, duration: 500 }}>{title}</p>
-	{/if}
-</a>
+{#if !isButton}
+	<a href="{link}" class="btn_container" on:mouseenter={toggleVisibility} on:mouseleave={toggleVisibility}>
+		<img src={icon} alt={link}>
+		{#if visible}
+			<p style="color: {color}" transition:fly={{ x: -50, duration: 500 }}>{title}</p>
+		{/if}
+	</a>
+	{:else}
+		<button on:click={swapPopup}>Open Pop-up</button>
+		<PopUp {isOpen} on:close={swapPopup}>
+			<h2>Pop-up Header</h2>
+			<p>Pop-up content goes here.</p>
+		</PopUp>
+{/if}
+
+
 
 <style lang="scss">
 	.btn_container {
