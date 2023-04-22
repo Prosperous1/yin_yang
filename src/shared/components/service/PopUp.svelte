@@ -1,4 +1,5 @@
 <script>
+
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
@@ -9,6 +10,10 @@
 		dispatch('close')
 	}
 </script>
+
+
+
+
 
 {#if isOpen}
 	<div class="popup-backdrop">
@@ -36,6 +41,8 @@
 	}
 
 	.popup {
+		display: flex;
+		flex-direction: column;
 		background-color: white;
 		padding: 1rem;
 		border-radius: 0.5rem;
