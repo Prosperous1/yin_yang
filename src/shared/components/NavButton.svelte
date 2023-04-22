@@ -2,6 +2,11 @@
 	import {supabase} from '/src/routes/lib/supabase.js'
 	import { navigate } from 'svelte-routing'
 
+	import { slide, fly } from 'svelte/transition';
+
+	import PopUp from "./service/PopUp.svelte";
+	import {createEventDispatcher} from "svelte";
+
 	let email = ''
 	let password = ''
 	let error = null
@@ -19,17 +24,8 @@
 		}
 	}
 
-	import { fly } from 'svelte/transition';
-
-	import PopUp from "./service/PopUp.svelte";
-	import {createEventDispatcher} from "svelte";
-
-
 	let visible = false;
 
-	function toggleVisibility() {
-		visible = !visible;
-	}
 	const dispatch = createEventDispatcher()
 	let isOpen = false;
 
@@ -49,10 +45,23 @@
 </script>
 
 {#if !isButton}
-	<a href="{link}" class="btn_container" on:mouseenter={toggleVisibility} on:mouseleave={toggleVisibility}>
+	<a
+		href="{link}"
+		class="btn_container"
+		on:mouseenter={() => {visible = true}}
+		on:mouseleave={() => visible = false}>
 		<img src={icon} alt={link}>
 		{#if visible}
-			<p style="color: {color}" transition:fly={{ x: -50, duration: 500 }}>{title}</p>
+			<div class="title-wrapper"
+				 in:slide="{{axis: 'x', duration: 200}}"
+				 out:slide="{{axis: 'x', duration: 200, delay: 150}}"
+			>
+				<div class="title"
+					 in:fly="{{ x: -50, duration: 200, delay: 150 }}"
+					 out:fly="{{ x: -50, duration: 200}}">
+					<p style="color: {color}">{title}</p>
+				</div>
+			</div>
 		{/if}
 	</a>
 	{:else}
@@ -70,13 +79,13 @@
 						<input type="password" bind:value={password} />
 					</label>
 					<button type="submit">Логин</button>
-					<a href="registration" style="color: gray">Регистрация</a>
+					<a on:click={swapPopup} href="registration" style="color: gray">Регистрация</a>
 				</form>
 				{#if isPopupOpen}
 					<PopUp onClose={closePopup} />
 				{/if}
 				{#if error}
-					<p>{Ошибка}</p>
+					<p>{error}</p>
 				{/if}
 			</main>
 		</PopUp>
@@ -137,13 +146,10 @@
 		font-size: 20px;
 
 		padding: .5em;
-		width: 46px;
-		height: 46px;
 
-		&:hover {
-			width: 160px;
-			background: rgba(211, 211, 211, 0.40);
-		}
+		background: rgba(211, 211, 211, 0.40);
+
+		height: 46px;
 
 		p {
 			text-align: center;

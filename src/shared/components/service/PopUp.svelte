@@ -11,10 +11,6 @@
 	}
 </script>
 
-
-
-
-
 {#if isOpen}
 	<div class="popup-backdrop">
 		<div class="popup">
