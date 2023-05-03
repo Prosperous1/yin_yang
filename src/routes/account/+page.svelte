@@ -35,6 +35,6 @@
 		<a href="registration" style="color: black">Регистрация</a>
 	</form>
 	{#if error}
-		<p>{Ошибка}</p>
+		<p>{error}</p>
 	{/if}
 </main>

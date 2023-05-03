@@ -13,7 +13,7 @@
     <div class="sub_header_container">
         <NavButton isButton={true} link="account" color="black" title="Профиль" icon="/icons/ui/account.svg"/>
         <NavButton link="favourite" color="black" title="Избранное" icon="/icons/ui/love.svg"/>
-        <NavButton link="cart" color="black" title="Корзина" icon="/icons/ui/basket.svg"/>
+        <NavButton link="profile" color="black" title="Корзина" icon="/icons/ui/basket.svg"/>
     </div>
 </nav>
 
