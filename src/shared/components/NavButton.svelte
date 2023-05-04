@@ -13,13 +13,14 @@
 
 	async function handleLogin(event) {
 		event.preventDefault()
-		const { user, error: authError } = await supabase.auth.signIn({
+		const { user, error: authError } = await supabase.auth.signInWithPassword({
 			email,
 			password,
 		})
 		if (authError) {
 			error = authError.message
 		} else {
+			console.log(user)
 			navigate('/')
 		}
 	}
