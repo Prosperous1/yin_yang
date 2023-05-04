@@ -1,10 +1,20 @@
-<script>
+<script lang="ts">
+	import type { PageData } from './$types';
 	import { supabase } from '../lib/supabase.js'
 	import { navigate } from 'svelte-routing'
+	import {onMount} from "svelte";
+
+	export let data: PageData;
+	$: ({ user, tableData } = data);
 
 	let email = ''
 	let password = ''
 	let error = null
+
+	onMount(() => {
+		console.log('Auth page mounted');
+	});
+
 
 	async function handleLogin(event) {
 		event.preventDefault()

@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/auth-helpers-sveltekit": "^0.9.4",
 		"@supabase/supabase-js": "^2.15.0",
 		"svelte-routing": "^1.6.0"
 	}

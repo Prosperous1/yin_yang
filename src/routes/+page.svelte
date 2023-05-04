@@ -1,18 +1,36 @@
-<script>
-import NavButton from "../shared/components/NavButton.svelte";
-import SectionHeading from "../shared/components/SectionHeading.svelte";
-import ConstructorCard from "../shared/components/home/ConstructorCard.svelte";
-import Filter from "../shared/components/Filter.svelte";
-import FoodCard from "../shared/components/home/FoodCard.svelte";
+<script lang="ts">
+	import type { PageData } from './$types';
+	import NavButton from "../shared/components/NavButton.svelte";
+	import SectionHeading from "../shared/components/SectionHeading.svelte";
+	import ConstructorCard from "../shared/components/home/ConstructorCard.svelte";
+	import Filter from "../shared/components/Filter.svelte";
+	import FoodCard from "../shared/components/home/FoodCard.svelte";
 
-const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
+	const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
 
-export let data;
-let { products } = data;
-$: ({ products } = data);
+	export let data: PageData;
 
-console.log(products)
+	let { products } = data;
+	$: ({ products } = data);
+
+	console.log(products)
+
+	let loadedData = [];
+	async function loadData() {
+		const { data: result } = await data.supabase.from('test').select('*').limit(20);
+		loadedData = result;
+	}
+
+	$: if (data.session) {
+		loadData();
+	}
 </script>
+
+
+{#if data.session}
+	<p>client-side data fetching with RLS</p>
+	<pre>{JSON.stringify(loadedData, null, 2)}</pre>
+{/if}
 
 
 <section>
