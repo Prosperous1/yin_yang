@@ -4,7 +4,7 @@
 	import {invalidate} from "$app/navigation";
 
 	export let data: PageData;
-	$: ({ user } = data);
+	$: ({ user, userInfo } = data);
 
 	let loading = false;
 	const handleLogout = () => {
@@ -24,7 +24,7 @@
 	<div class="section">
 		<div class="card-prof-up">
 			<div>
-				{user.first_name}
+				{userInfo.first_name}
 				<div class="card-progress">
 					<img src="icons/ui/flower.svg" alt="">
 					<p>Частый гость</p>
@@ -43,13 +43,14 @@
 			<div class="card-personal">
 				<h1>Личное</h1>
 				<div class="personal-desc">
-					<img src="icons/ui/accountgrey.svg" alt="">{user.first_name}
+					<img src="icons/ui/accountgrey.svg" alt="">
+					<p>{userInfo.first_name} {userInfo.last_name}</p>
 				</div>
 				<div class="personal-desc">
 					<img src="icons/ui/message.svg" alt="">{user.email}
 				</div>
 				<div class="personal-desc">
-					<img src="icons/ui/call.svg" alt="">{user.Phone}
+					<img src="icons/ui/call.svg" alt="">{user.phone}
 				</div>
 				<button>Изменить</button>
 			</div>
