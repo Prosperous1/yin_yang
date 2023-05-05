@@ -27,6 +27,7 @@ export const actions: Actions = {
 			});
 		}
 
+
 		const { error } = await supabase.auth.signUp({
 			email,
 			password,

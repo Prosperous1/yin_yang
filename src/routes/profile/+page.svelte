@@ -24,7 +24,7 @@
 	<div class="section">
 		<div class="card-prof-up">
 			<div>
-				<p>Username</p>
+				{user.first_name}
 				<div class="card-progress">
 					<img src="icons/ui/flower.svg" alt="">
 					<p>Частый гость</p>
@@ -43,13 +43,13 @@
 			<div class="card-personal">
 				<h1>Личное</h1>
 				<div class="personal-desc">
-					<img src="icons/ui/accountgrey.svg" alt="">Username
+					<img src="icons/ui/accountgrey.svg" alt="">{user.first_name}
 				</div>
 				<div class="personal-desc">
-					<img src="icons/ui/message.svg" alt="">Mail
+					<img src="icons/ui/message.svg" alt="">{user.email}
 				</div>
 				<div class="personal-desc">
-					<img src="icons/ui/call.svg" alt="">Phone number
+					<img src="icons/ui/call.svg" alt="">{user.Phone}
 				</div>
 				<button>Изменить</button>
 			</div>

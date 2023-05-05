@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	// import type { PageData } from './$types';
 	import { supabase } from '../lib/supabase.js'
 	import { navigate } from 'svelte-routing'
 	import {onMount} from "svelte";
 
-	export let data: PageData;
-	$: ({ user, tableData } = data);
+	export let data
+	$: ({ user, tableData } = data)
 
 	let email = ''
 	let password = ''
