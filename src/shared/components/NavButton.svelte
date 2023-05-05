@@ -1,34 +1,36 @@
 <script lang="ts">
-	import {supabase} from '/src/routes/lib/supabase.js'
-	import { navigate } from 'svelte-routing'
+	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
+	import { invalidate } from '$app/navigation';
+	import {createEventDispatcher} from "svelte";
 
+	import type { ActionData } from './$types';
+
+	import { navigate } from 'svelte-routing'
 	import { slide, fly } from 'svelte/transition';
 
 	import PopUp from "./service/PopUp.svelte";
-	import {createEventDispatcher} from "svelte";
-
-	let email = ''
-	let password = ''
-	let error = null
-
-	async function handleLogin(event) {
-		event.preventDefault()
-		const { user, error: authError } = await supabase.auth.signInWithPassword({
-			email,
-			password,
-		})
-		if (authError) {
-			error = authError.message
-		} else {
-			console.log(user)
-			navigate('/')
-		}
-	}
-
-	let visible = false;
 
 	const dispatch = createEventDispatcher()
+
+	let error = null
+	let loading = false;
+	let visible = false;
 	let isOpen = false;
+	let isPopupOpen = false;
+
+	const handleSubmit: SubmitFunction = () => {
+		loading = true;
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await invalidate('supabase:auth');
+			} else {
+				await applyAction(result);
+			}
+			loading = false;
+
+			swapPopup()
+		};
+	};
 
 	function swapPopup() {
 		isOpen = !isOpen;
@@ -37,12 +39,11 @@
 		dispatch('close')
 	}
 
-	let isPopupOpen = false;
 	function openProfile() {
 		navigate('src/routes/registration/+page.svelte');
 	}
 
-	export let link, title, icon, color, isButton;
+	export let link, title, icon, color, isButton, form: ActionData;
 </script>
 
 {#if !isButton}
@@ -70,17 +71,43 @@
 		<PopUp {isOpen} on:close={swapPopup}>
 			<main>
 				<h1>Войти</h1>
-				<form on:submit={handleLogin} class="form">
-					<label>
-						Почта
-						<input type="email" bind:value={email} />
-					</label>
-					<label>
-						Пароль
-						<input type="password" bind:value={password} />
-					</label>
-					<button type="submit">Логин</button>
-					<a on:click={swapPopup} href="registration" style="color: gray">Регистрация</a>
+				{#if form?.error}
+					<div class="block notification is-danger">{form.error}</div>
+				{/if}
+				<form method="post" use:enhance={handleSubmit}>
+					<div class="field">
+						<label for="email" class="label">Email</label>
+						<p class="control">
+							<input
+								id="email"
+								name="email"
+								value={form?.values?.email ?? ''}
+								class="input"
+								type="email"
+								placeholder="Email"
+								required
+							/>
+						</p>
+					</div>
+					<div class="field">
+						<label for="password" class="label">Password</label>
+						<p class="control">
+							<input
+								id="password"
+								name="password"
+								class="input"
+								type="password"
+								placeholder="Password"
+								required
+							/>
+						</p>
+					</div>
+					<div class="field">
+						<p class="control">
+							<button disabled={loading} class="button is-fullwidth is-link">Sign in</button>
+						</p>
+					</div>
+					<a href="/registration">Sign Up</a>
 				</form>
 				{#if isPopupOpen}
 					<PopUp onClose={closePopup} />

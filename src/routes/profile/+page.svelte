@@ -1,3 +1,25 @@
+<script lang="ts">
+	import type { PageData } from './$types';
+	import {applyAction, enhance} from "$app/forms";
+	import {invalidate} from "$app/navigation";
+
+	export let data: PageData;
+	$: ({ user } = data);
+
+	let loading = false;
+	const handleLogout = () => {
+		loading = true;
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await invalidate('supabase:auth');
+			} else {
+				await applyAction(result);
+			}
+			loading = false;
+		};
+	};
+</script>
+
 <section>
 	<div class="section">
 		<div class="card-prof-up">
@@ -39,6 +61,13 @@
 			</div>
 		</div>
 	</div>
+
+	<form action="/logout" method="post" use:enhance={handleLogout}>
+		<button disabled={loading} type="submit">Sign out</button>
+	</form>
+
+	<div>Protected content for {user.email}</div>
+	<pre>{JSON.stringify(user, null, 2)}</pre>
 </section>
 
 <style lang="scss">
@@ -72,9 +101,6 @@
 		position: relative;
 		gap: 15px;
 
-
-
-
 		background: #282828;
 		border-radius: 12px;
 
@@ -84,7 +110,6 @@
 			font-size: 22px;
 			padding-right: 15px;
 		}
-
 
 		button{
 			display: flex;
@@ -101,8 +126,6 @@
 			gap: 36px;
 			padding: 14px 24px 15px 36px;
 		}
-
-
 	}
 
 	.card-btn{
@@ -127,7 +150,6 @@
 			font-size: 28px;
 		}
 
-
 		button{
 			display: flex;
 			align-items: flex-end;
@@ -145,7 +167,6 @@
 		}
 	}
 
-
 	.personal-desc{
 		display: flex;
 		flex-direction: row;
@@ -158,11 +179,9 @@
 		color: #666666;
 	}
 
-
 	.card-prof-low{
 		display: flex;
 		flex-direction: row;
 		gap: 50px;
 	}
-
 </style>

@@ -1,39 +1,58 @@
 <script>
-	import { supabase } from '../lib/supabase.js'
-	import { navigate } from 'svelte-routing'
+	import { applyAction, enhance } from '$app/forms';
 
-	let email = ''
-	let password = ''
-	let error = null
+	export let form;
+	let loading = false;
 
-	async function handleSignup(event) {
-		event.preventDefault()
-		const { user, error: authError } = await supabase.auth.signUp({
-			email,
-			password,
-		})
-		if (authError) {
-			error = authError.message
-		} else {
-			navigate('/')
-		}
-	}
+	const handleSubmit = () => {
+		loading = true;
+		return async ({ result }) => {
+			await applyAction(result);
+			loading = false;
+		};
+	};
 </script>
 
 <main>
 	<h1>Зарегистрироваться</h1>
-	<form on:submit={handleSignup}>
-		<label>
-			Почта
-			<input type="email" bind:value={email} />
-		</label>
-		<label>
-			Пароль
-			<input type="password" bind:value={password} />
-		</label>
-		<button type="submit">Зарегистрироваться</button>
-	</form>
-	{#if error}
-		<p>{error}</p>
+	{#if form?.error}
+		<div class="block notification is-danger">{form.error}</div>
 	{/if}
+	{#if form?.message}
+		<div class="block notification is-primary">{form.message}</div>
+	{/if}
+	<form method="post" use:enhance={handleSubmit}>
+		<div class="field">
+			<label for="email" class="label">Email</label>
+			<p class="control">
+				<input
+					id="email"
+					name="email"
+					value={form?.values?.email ?? ''}
+					class="input"
+					type="email"
+					placeholder="Email"
+					required
+				/>
+			</p>
+		</div>
+		<div class="field">
+			<label for="password" class="label">Password</label>
+			<p class="control">
+				<input
+					id="password"
+					name="password"
+					class="input"
+					type="password"
+					placeholder="Password"
+					required
+				/>
+			</p>
+		</div>
+		<div class="field">
+			<p class="control">
+				<button disabled={loading} class="button is-fullwidth is-link">Sign up</button>
+			</p>
+		</div>
+	</form>
 </main>
