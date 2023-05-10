@@ -22,10 +22,17 @@
 	let loading = false;
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
-		return async () => {
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await invalidate('supabase:auth');
+			} else {
+				await applyAction(result);
+			}
 			loading = false;
-		}
-	}
+
+			swapPopup()
+		};
+	};
 
 
 	const handleSignOut: SubmitFunction = () => {
