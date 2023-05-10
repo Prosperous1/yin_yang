@@ -1,6 +1,7 @@
 import type { PageLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
+
 export const load: PageLoad = async ({ parent }) => {
 	const { supabase, session } = await parent();
 	if (!session) {
@@ -9,7 +10,7 @@ export const load: PageLoad = async ({ parent }) => {
 
 	let { data: user} = await supabase
 		.from('user')
-		.select('user_uuid')
+		.select('user_uuid, first_name')
 		.eq(
 			'user_uuid',
 			session.user.id
@@ -30,6 +31,7 @@ export const load: PageLoad = async ({ parent }) => {
 			},])
 	}
 
+
 	let {data: userInfo} = await supabase
 		.from('user')
 		.select('*')
@@ -44,4 +46,4 @@ export const load: PageLoad = async ({ parent }) => {
 		user: session.user,
 		userInfo: userInfo,
 	};
-};
+}

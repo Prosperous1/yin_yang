@@ -1,33 +1,69 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import {applyAction, enhance} from "$app/forms";
+	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import {invalidate} from "$app/navigation";
+	import PopUp from "../../shared/components/service/PopUp.svelte";
 
-	export let data: PageData;
-	$: ({ user, userInfo } = data);
+
+	let isOpen = false;
+	let isPopupOpen = false;
+
+	export let data;
+	$: ({ user, userInfo,session, supabase, profile } = data);
+
+	let profileForm: any;
+	let firstName: string = user?.first_name ?? '';
+	let lastName: string = user?.last_name ?? '';
+	let phone: string = userInfo?.phone ?? '';
+	// let website: string = profile?.website ?? '';
+	// let avatarUrl: string = profile?.avatar_url ?? '';
+
+
 
 	let loading = false;
-	const handleLogout = () => {
+	const handleSubmit: SubmitFunction = () => {
 		loading = true;
-		return async ({ result }) => {
-			if (result.type === 'redirect') {
-				await invalidate('supabase:auth');
-			} else {
-				await applyAction(result);
-			}
+		return async () => {
 			loading = false;
-		};
-	};
+		}
+	}
+
+
+	const handleSignOut: SubmitFunction = () => {
+		loading = true;
+		return async ({ update }) => {
+			loading = false;
+			update();
+		}
+	}
+
+
+
+	function swapPopup() {
+		isOpen = !isOpen;
+	}
+	function closePopup() {
+		dispatch('close')
+	}
+
+	export let  form;
+
 </script>
 
 <section>
 	<div class="section">
 		<div class="card-prof-up">
-			<div>
-				{userInfo.first_name}
-				<div class="card-progress">
-					<img src="icons/ui/flower.svg" alt="">
-					<p>Частый гость</p>
+			<div class="container">
+				<label for="avatar" class="avatar w-32 rounded-full">
+					<img src="image/star.jpg" w="32" height="120" alt="user avatar" class="ava">
+					<img src="icons/ui/pencil.svg">
+				</label>
+				<input type="file" name="avatar" id="avatar" value="" accept="image/*" hidden>
+				<div>
+					{userInfo.first_name}
+					<div class="card-progress">
+						<img src="icons/ui/flower.svg" alt="">
+						<p>Частый гость</p>
+					</div>
 				</div>
 			</div>
 			<div class="card-btn">
@@ -52,23 +88,102 @@
 				<div class="personal-desc">
 					<img src="icons/ui/call.svg" alt="">{user.phone}
 				</div>
-				<button>Изменить</button>
+				<button on:click={swapPopup}>Изменить</button>
+				<PopUp {isOpen} on:close={swapPopup}>
+					<main>
+						<h1>Личное</h1>
+						{#if form?.error}
+							<div class="block notification is-danger">{form.error}</div>
+						{/if}
+						<form
+							class="form-widget"
+							method="post"
+							action="?/update"
+							use:enhance={handleSubmit}
+							bind:this={profileForm}
+						>
+							<div class="field">
+								<label for="fullName" class="label"><img src="icons/ui/accountgrey.svg" alt=""></label>
+								<p class="control">
+									<input
+										id="fullName"
+										name="fullName"
+										value={form?.values?.first_name ?? ''}
+										class="input"
+										type="text"
+										placeholder="Имя"
+										required
+									/>
+								</p>
+							</div>
+							<div class="field">
+								<label for="lastName" class="label"><img src="icons/ui/accountgrey.svg" alt=""></label>
+								<p class="control">
+									<input
+										id="lastName"
+										name="lastName"
+										value={form?.values?.last_name ?? ''}
+										class="input"
+										type="text"
+										placeholder="Фамилия"
+										required
+									/>
+								</p>
+							</div>
+							<div class="field">
+								<label for="email" class="label"><img src="icons/ui/message.svg" alt=""></label>
+								<p class="control">
+									<input
+										id="email"
+										name="email"
+										value={form?.values?.email ?? ''}
+										class="input"
+										type="email"
+										placeholder="email"
+										required
+									/>
+								</p>
+							</div>
+							<div class="field">
+								<label for="phone" class="label"><img src="icons/ui/call.svg" alt=""></label>
+								<p class="control">
+									<input
+										id="phone"
+										name="phone"
+										value={form?.values?.phone ?? ''}
+										class="input"
+										type="text"
+										placeholder="phone"
+										required
+									/>
+								</p>
+							</div>
+							<div class="field">
+								<input
+									type="submit"
+									class="button block primary"
+									value={loading ? 'Loading...' : 'Сохранить'}
+									disabled={loading}
+								/>
+							</div>
+						</form>
+						{#if isPopupOpen}
+							<PopUp onClose={closePopup} />
+						{/if}
+					</main>
+				</PopUp>
 			</div>
 			<div class="card-personal">
 				<h1>Данные <br> доставки</h1>
 				<button><img src="icons/ui/location.svg" alt=""> Чичеринская, 16</button>
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
-				<button>Изменить</button>
 			</div>
 		</div>
 	</div>
 
-	<form action="/logout" method="post" use:enhance={handleLogout}>
+	<form action="/logout" method="post" use:enhance={handleSignOut}>
 		<button disabled={loading} type="submit">Sign out</button>
 	</form>
-
-	<div>Protected content for {user.email}</div>
-	<pre>{JSON.stringify(user, null, 2)}</pre>
 </section>
 
 <style lang="scss">
@@ -78,10 +193,20 @@
 
 		padding: 90px;
 	}
+	.ava{
+		border-radius: 100px;
+	}
+	.pencil{
+		width: 4px;
+		height: 4px;
+	}
 	.section{
 		display: flex;
 		flex-direction: column;
 		gap: 90px;
+	}
+	.container{
+		display: flex;
 	}
 
 	.card-prof-up{
