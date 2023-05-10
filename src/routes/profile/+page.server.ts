@@ -18,46 +18,34 @@ export const load = async ({ locals: { supabase, getSession } }) => {
 };
 
 export const actions = {
-	update: async ({ request, locals: { supabase, getSession } }) => {
+	default: async ({ request, locals: { supabase, getSession } }) => {
 		const formData = await request.formData();
-		const fullName = formData.get('fullName') as string;
+		const firstName = formData.get('firstName') as string;
 		const lastName = formData.get('lastName') as string;
-		const phone = formData.get('phone') as string;
-
 
 		const session = await getSession();
 
-		const { error } = await supabase.from('user').upsert({
-			id: session?.user.id,
-			first_name: fullName,
-			last_name: lastName,
-			phone,
+		console.log(session.user.id)
 
-			updated_at: new Date()
-		});
+		const { error } = await supabase
+			.from('user')
+			.update({
+				first_name: firstName,
+				last_name: lastName,
+			})
+			.eq('user_uuid', session.user.id);
 
 
 		if (error) {
 			return fail(500, {
-				fullName,
+				firstName,
 				lastName,
-				phone,
-
 			});
 		}
 
 		return {
-			fullName,
+			firstName,
 			lastName,
-			phone,
-
 		};
 	},
-	signout: async ({ locals: { supabase, getSession } }) => {
-		const session = await getSession();
-		if (session) {
-			await supabase.auth.signOut();
-			throw redirect(303, '/');
-		}
-	}
 };

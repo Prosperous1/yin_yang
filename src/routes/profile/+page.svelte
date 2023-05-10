@@ -39,7 +39,7 @@
 		loading = true;
 		return async ({ update }) => {
 			loading = false;
-			update();
+			await update();
 		}
 	}
 
@@ -105,16 +105,15 @@
 						<form
 							class="form-widget"
 							method="post"
-							action="?/update"
 							use:enhance={handleSubmit}
 							bind:this={profileForm}
 						>
 							<div class="field">
-								<label for="fullName" class="label"><img src="icons/ui/accountgrey.svg" alt=""></label>
+								<label for="firstName" class="label"><img src="icons/ui/accountgrey.svg" alt=""></label>
 								<p class="control">
 									<input
-										id="fullName"
-										name="fullName"
+										id="firstName"
+										name="firstName"
 										value={form?.values?.first_name ?? ''}
 										class="input"
 										type="text"
