@@ -21,5 +21,12 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		data: { session }
 	} = await supabase.auth.getSession();
 
-	return { supabase, session };
+	let dbUser;
+
+	if (session !== null) {
+		dbUser =  await supabase.from("user").select('id').eq('user_uuid', session.user.id)
+	}
+
+
+	return { supabase, session, dbUser };
 };

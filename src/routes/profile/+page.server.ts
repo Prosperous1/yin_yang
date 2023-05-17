@@ -1,24 +1,11 @@
 import { fail, redirect } from '@sveltejs/kit';
-
-export const load = async ({ locals: { supabase, getSession } }) => {
-	const session = await getSession();
-
-	if (!session) {
-		throw redirect(303, '/');
-	}
+import {page} from "$app/stores";
 
 
-	const { data: user } = await supabase
-		.from('user')
-		.select(`first_name, last_name`)
-		.eq('id', session.user.id)
-		.single();
 
-	return { session, user };
-};
 
 export const actions = {
-	default: async ({ request, locals: { supabase, getSession } }) => {
+	update: async ({ request, locals: { supabase, getSession } }) => {
 		const formData = await request.formData();
 		const firstName = formData.get('firstName') as string;
 		const lastName = formData.get('lastName') as string;
@@ -35,7 +22,6 @@ export const actions = {
 			})
 			.eq('user_uuid', session.user.id);
 
-
 		if (error) {
 			return fail(500, {
 				firstName,
@@ -48,4 +34,55 @@ export const actions = {
 			lastName,
 		};
 	},
+
+	insert:async ({request, locals: { supabase, getUser} })=>{
+		const formData = await request.formData();
+		const address = formData.get('address') as string;
+
+
+		const user = await getUser();
+
+		console.log(user)
+
+		const { data, error } = await supabase
+			.from('delivery_address')
+			.insert([
+				{ address: address, user_id: user[0].id },
+			])
+
+		if (error) {
+			return fail(500, {
+				address,
+			});
+		}
+
+		return {
+			address,
+		};
+	},
+
+	// insertt:async ({request, locals:{supabase} })=>{
+	// 	const formData = await request.formData();
+	// 	const email = formData.get('email') as string;
+	// 	const phone = formData.get('pfone') as string;
+	//
+	// 	const { error } = await supabase
+	// 	.from('authentication')
+	// 		.insert([		{
+	// 			email: email,
+	// 			phone: phone
+	// 		}])
+	// 	if (error) {
+	// 		return fail(500, {
+	// 			email,
+	// 			phone
+	// 		});
+	// 	}
+	//
+	// 	return {
+	// 		email,
+	// 		phone
+	// 	};
+	// }
+
 };

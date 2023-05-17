@@ -5,11 +5,29 @@
 	const dispatch = createEventDispatcher()
 
 	export let isOpen = false
+	export let isUpdate = false
 
 	function closePopup() {
 		dispatch('close')
 	}
+	function closeEditor() {
+		dispatch('close')
+	}
 </script>
+
+{#if isUpdate}
+	<div class="popup-backdrop">
+		<div class="popup">
+			<slot name="header">
+				<button class="popup-close" on:click={closeEditor}>×</button>
+			</slot>
+			<slot></slot>
+		</div>
+	</div>
+{/if}
+
+
+
 
 {#if isOpen}
 	<div class="popup-backdrop">
@@ -40,7 +58,7 @@
 		display: flex;
 		flex-direction: column;
 		background-color: white;
-		padding: 1rem;
+		padding: 2rem;
 		border-radius: 0.5rem;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		position: relative;

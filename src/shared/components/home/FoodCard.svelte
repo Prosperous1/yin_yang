@@ -1,5 +1,31 @@
 <script>
+	import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
+
 	export let title, description, count, weight, price, image_url, category;
+	import { createClient } from '@supabase/supabase-js'
+
+	const supabaseUrl = PUBLIC_SUPABASE_URL
+	const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY
+
+	const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+
+	// const user = await getUser();
+	// export let product;
+	//
+	// async function addToFavorites() {
+	// 	// Вставьте информацию о товаре в таблицу "Избранное"
+	// 	const { data, error } = await supabase
+	// 		.from('favorites')
+	// 		.insert({ product_id: product.id,user_id: user[0].id });
+	//
+	// 	if (error) {
+	// 		console.error(error);
+	// 	} else {
+	// 		console.log('Товар успешно добавлен в избранное!');
+	// 	}
+	// }
+	//
 </script>
 
 <div class="container">
@@ -15,7 +41,7 @@
 		</div>
 		<p class="description">{description}</p>
 	</div>
-	<button class="like_btn">
+	<button class="like_btn" >
 		<img src="icons/ui/heart.svg" alt="Add to Favourite">
 	</button>
 	<button class="price_btn">

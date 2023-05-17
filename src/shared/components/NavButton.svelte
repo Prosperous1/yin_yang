@@ -78,7 +78,7 @@
 				{/if}
 				<form method="post" use:enhance={handleSubmit}>
 					<div class="field">
-						<label for="email" class="label">Email</label>
+						<label for="email" class="label">Почта</label>
 						<p class="control">
 							<input
 								id="email"
@@ -91,25 +91,27 @@
 							/>
 						</p>
 					</div>
-					<div class="field">
-						<label for="password" class="label">Password</label>
-						<p class="control">
-							<input
-								id="password"
-								name="password"
-								class="input"
-								type="password"
-								placeholder="Password"
-								required
-							/>
-						</p>
+					<div class="low-account">
+						<div class="field">
+							<label for="password" class="label">Пароль</label>
+							<p class="control">
+								<input
+									id="password"
+									name="password"
+									class="input"
+									type="password"
+									placeholder="Password"
+									required
+								/>
+							</p>
+						</div>
+						<div class="field">
+							<p class="control">
+								<button disabled={loading} class="button is-fullwidth is-link">Войти</button>
+							</p>
+						</div>
+						<a href="/registration" style="color: grey">Зарегистрироваться</a>
 					</div>
-					<div class="field">
-						<p class="control">
-							<button disabled={loading} class="button is-fullwidth is-link">Sign in</button>
-						</p>
-					</div>
-					<a href="/registration">Sign Up</a>
 				</form>
 				{#if isPopupOpen}
 					<PopUp onClose={closePopup} />
@@ -144,7 +146,20 @@
 		flex-direction: column;
 		gap: 10px;
 		align-items: center;
+		padding: 20px 20px 10px 20px;
+
+		a{
+			font-size: 15px;
+		}
 	}
+	.low-account{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+
+	}
+
+
 	.popup-close{
 		display: flex;
 		justify-content: center;
@@ -177,7 +192,7 @@
 
 		padding: .5em;
 
-		background: rgba(211, 211, 211, 0.40);
+		//background: rgba(211, 211, 211, 0.40);
 
 		height: 46px;
 

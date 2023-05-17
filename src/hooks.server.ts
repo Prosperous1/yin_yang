@@ -19,6 +19,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return session;
 	};
 
+	event.locals.getUser = async () => {
+		const session = await event.locals.getSession()
+
+		const userData = await event.locals.supabase.from('user').select().eq('user_uuid', session.user.id)
+
+		return userData.data;
+	};
+
 	return resolve(event, {
 		filterSerializedResponseHeaders(name) {
 			return name === 'content-range';

@@ -2,20 +2,29 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import {invalidate} from "$app/navigation";
 	import PopUp from "../../shared/components/service/PopUp.svelte";
+	import { slide } from 'svelte/transition'
+
+	let isExpanded = false
+
+	function clickHandler() {
+		isExpanded = !isExpanded
+	}
 
 
 	let isOpen = false;
 	let isPopupOpen = false;
+	let isUpdate = false;
 
 	export let data;
-	$: ({ user, userInfo,session, supabase, profile } = data);
+	$: ({ user, userInfo,session, supabase, delivery_address, userData } = data);
 
 	let profileForm: any;
+	let dataForm: any;
 	let firstName: string = user?.first_name ?? '';
 	let lastName: string = user?.last_name ?? '';
-	let phone: string = userInfo?.phone ?? '';
-	// let website: string = profile?.website ?? '';
-	// let avatarUrl: string = profile?.avatar_url ?? '';
+	let email: string = user?.email ?? '';
+	let phone: string = user?.phone ?? '';
+	let address: string = delivery_address?.address??'';
 
 
 
@@ -34,7 +43,6 @@
 		};
 	};
 
-
 	const handleSignOut: SubmitFunction = () => {
 		loading = true;
 		return async ({ update }) => {
@@ -44,9 +52,11 @@
 	}
 
 
-
 	function swapPopup() {
 		isOpen = !isOpen;
+	}
+	function openEditor() {
+		isUpdate = !isUpdate;
 	}
 	function closePopup() {
 		dispatch('close')
@@ -60,13 +70,8 @@
 	<div class="section">
 		<div class="card-prof-up">
 			<div class="container">
-				<label for="avatar" class="avatar w-32 rounded-full">
-					<img src="image/star.jpg" w="32" height="120" alt="user avatar" class="ava">
-					<img src="icons/ui/pencil.svg">
-				</label>
-				<input type="file" name="avatar" id="avatar" value="" accept="image/*" hidden>
 				<div>
-					{userInfo.first_name}
+					<h1>{userInfo.first_name}</h1>
 					<div class="card-progress">
 						<img src="icons/ui/flower.svg" alt="">
 						<p>Частый гость</p>
@@ -96,7 +101,7 @@
 					<img src="icons/ui/call.svg" alt="">{user.phone}
 				</div>
 				<button on:click={swapPopup}>Изменить</button>
-				<PopUp {isOpen} on:close={swapPopup}>
+				<PopUp class="personal" {isOpen} on:close={swapPopup}>
 					<main>
 						<h1>Личное</h1>
 						{#if form?.error}
@@ -105,6 +110,7 @@
 						<form
 							class="form-widget"
 							method="post"
+							action="?/update"
 							use:enhance={handleSubmit}
 							bind:this={profileForm}
 						>
@@ -181,7 +187,54 @@
 			</div>
 			<div class="card-personal">
 				<h1>Данные <br> доставки</h1>
-				<button><img src="icons/ui/location.svg" alt=""> Чичеринская, 16</button>
+				<button on:click={clickHandler}><img src="icons/ui/location.svg" alt="">Address</button>
+				{#if isExpanded}
+					<ul  transition:slide>
+						<button on:click={openEditor}><img src="icons/ui/pencil.svg" alt="">Добавить Адрес</button>
+						<PopUp {isUpdate} on:close={openEditor}>
+							<main>
+								{#if form?.error}
+									<div class="block notification is-danger">{form.error}</div>
+								{/if}
+								<form
+									class="form-widget-addres"
+									method="post"
+									action="?/insert"
+									use:enhance={handleSubmit}
+									bind:this={dataForm}
+								>
+									<div class="field">
+										<h2>Адресс Доставки</h2>
+										<label for="address" class="label"></label>
+										<p class="control">
+											<input
+												id="address"
+												name="address"
+												value={form?.values?.address ?? ''}
+												class="input"
+												type="text"
+												placeholder="Адресс"
+												required
+											/>
+										</p>
+									</div>
+									<div class="field">
+										<input
+											type="submit"
+											class="button block primary"
+											value={loading ? 'Сохраняем...' : 'Сохранить'}
+											disabled={loading}
+										/>
+									</div>
+								</form>
+								{#if isPopupOpen}
+									<PopUp onClose={closeEditor} />
+								{/if}
+							</main>
+						</PopUp>
+					</ul>
+				{/if}
+				<button><img src="icons/ui/location.svg" alt="">  {userInfo.address}</button>
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
 			</div>
 		</div>
@@ -196,8 +249,6 @@
 	section {
 		display: flex;
 		flex-direction: column;
-
-		padding: 90px;
 	}
 	.ava{
 		border-radius: 100px;
@@ -210,13 +261,17 @@
 		display: flex;
 		flex-direction: column;
 		gap: 90px;
+		max-width: 1440px;
 	}
 	.container{
 		display: flex;
+		font-size: 22px;
+		font-weight: 900;
 	}
 
 	.card-prof-up{
 		display: flex;
+		max-width: 1440px;
 		justify-content: space-between;
 		padding: 38px 27px;
 		gap: 35px;
@@ -265,13 +320,25 @@
 		flex-direction: column;
 		gap: 28px;
 	}
+	.form-widget-addres{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 10px 10px 15px 10px;
+
+		h2{
+			color: black;
+			font-weight: 900;
+			font-size: 18px;
+		}
+
+	}
 
 	.card-personal{
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
-		padding: 20px 200px 15px 76px;
-
+		padding:16px 90px 71px 62px;
 		box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.25);
 		background: white;
 		border-radius: 18px;

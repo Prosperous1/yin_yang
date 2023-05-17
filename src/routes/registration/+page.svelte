@@ -23,7 +23,7 @@
 	{/if}
 	<form method="post" use:enhance={handleSubmit}>
 		<div class="field">
-			<label for="email" class="label">Email</label>
+			<label for="email" class="label">Почта</label>
 			<p class="control">
 				<input
 					id="email"
@@ -37,7 +37,7 @@
 			</p>
 		</div>
 		<div class="field">
-			<label for="password" class="label">Password</label>
+			<label for="password" class="label">Пароль</label>
 			<p class="control">
 				<input
 					id="password"
@@ -51,8 +51,13 @@
 		</div>
 		<div class="field">
 			<p class="control">
-				<button disabled={loading} class="button is-fullwidth is-link">Sign up</button>
+				<button disabled={loading} class="button is-fullwidth is-link">Войти</button>
 			</p>
 		</div>
 	</form>
 </main>
+
+<style lang="scss">
+
+
+</style>
