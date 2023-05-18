@@ -42,6 +42,18 @@
 			swapPopup()
 		};
 	};
+	const handleSubmitt: SubmitFunction = () => {
+		loading = true;
+		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				await invalidate('supabase:auth');
+			} else {
+				await applyAction(result);
+			}
+			loading = false;
+			closeEditor()
+		};
+	};
 
 	const handleSignOut: SubmitFunction = () => {
 		loading = true;
@@ -50,14 +62,21 @@
 			await update();
 		}
 	}
+	const toggleExpanded = () => {
+		isExpanded = !isExpanded;
+	};
 
 
 	function swapPopup() {
 		isOpen = !isOpen;
 	}
-	function openEditor() {
-		isUpdate = !isUpdate;
-	}
+	const openEditor = () => {
+		isUpdate = true;
+	};
+	const closeEditor = () => {
+		isUpdate = false;
+	};
+
 	function closePopup() {
 		dispatch('close')
 	}
@@ -189,50 +208,55 @@
 				<h1>Данные <br> доставки</h1>
 				<button on:click={clickHandler}><img src="icons/ui/location.svg" alt="">Address</button>
 				{#if isExpanded}
-					<ul  transition:slide>
-						<button on:click={openEditor}><img src="icons/ui/pencil.svg" alt="">Добавить Адрес</button>
-						<PopUp {isUpdate} on:close={openEditor}>
-							<main>
-								{#if form?.error}
-									<div class="block notification is-danger">{form.error}</div>
-								{/if}
-								<form
-									class="form-widget-addres"
-									method="post"
-									action="?/insert"
-									use:enhance={handleSubmit}
-									bind:this={dataForm}
-								>
-									<div class="field">
-										<h2>Адресс Доставки</h2>
-										<label for="address" class="label"></label>
-										<p class="control">
-											<input
-												id="address"
-												name="address"
-												value={form?.values?.address ?? ''}
-												class="input"
-												type="text"
-												placeholder="Адресс"
-												required
-											/>
-										</p>
-									</div>
-									<div class="field">
-										<input
-											type="submit"
-											class="button block primary"
-											value={loading ? 'Сохраняем...' : 'Сохранить'}
-											disabled={loading}
-										/>
-									</div>
-								</form>
-								{#if isPopupOpen}
-									<PopUp onClose={closeEditor} />
-								{/if}
-							</main>
-						</PopUp>
-					</ul>
+						<ul transition:slide>
+							<button on:click={openEditor}><img src="icons/ui/pencil.svg" alt="">Добавить Адрес</button>
+							{#if isUpdate}
+								<div id="page-mask">
+									<dialog open>
+										<button class="editor-close" on:click={closeEditor}>×</button>
+										<main>
+											{#if form?.error}
+												<div class="block notification is-danger">{form.error}</div>
+											{/if}
+											<form
+												class="form-widget-addres"
+												method="post"
+												action="?/insert"
+												use:enhance={handleSubmitt}
+												bind:this={dataForm}
+											>
+												<div class="field">
+													<h2>Адрес Доставки</h2>
+													<label for="address" class="label"></label>
+													<p class="control">
+														<input
+															id="address"
+															name="address"
+															value={form?.values?.address ?? ''}
+															class="input"
+															type="text"
+															placeholder="Адрес"
+															required
+														/>
+													</p>
+												</div>
+												<div class="field">
+													<input
+														type="submit"
+														class="button block primary"
+														value={loading ? 'Сохраняем...' : 'Сохранить'}
+														disabled={loading}
+													/>
+												</div>
+											</form>
+											{#if isPopupOpen}
+												<PopUp onClose={closeEditor} />
+											{/if}
+										</main>
+									</dialog>
+								</div>
+							{/if}
+						</ul>
 				{/if}
 				<button><img src="icons/ui/location.svg" alt="">  {user.address}</button>
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
@@ -249,6 +273,29 @@
 	section {
 		display: flex;
 		flex-direction: column;
+	}
+	#page-mask {
+		background: rgba(0, 0, 0, 0.5);
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	dialog{
+		margin: 0 auto;
+		position: absolute;
+		top: 380px;
+	}
+	.editor-close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		background: transparent;
+		border: none;
+		font-size: 2rem;
+		cursor: pointer;
+		padding: 0;
 	}
 	.ava{
 		border-radius: 100px;
