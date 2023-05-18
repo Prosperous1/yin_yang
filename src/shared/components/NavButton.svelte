@@ -34,6 +34,10 @@
 		};
 	};
 
+	function handleLinkClick(){
+		dispatch('close')
+	}
+
 	function swapPopup() {
 		isOpen = !isOpen;
 	}
@@ -110,8 +114,8 @@
 								<button disabled={loading} class="button is-fullwidth is-link">Войти</button>
 							</p>
 						</div>
-						<a href="/registration" style="color: grey">Зарегистрироваться</a>
-					</div>
+						<a href="registration" style="color: #5d5959" on:click={handleLinkClick}>Регистрация</a>
+						</div>
 				</form>
 				{#if isPopupOpen}
 					<PopUp onClose={closePopup} />
