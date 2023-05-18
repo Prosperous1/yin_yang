@@ -15,7 +15,6 @@
 		console.log('Auth page mounted');
 	});
 
-
 	async function handleLogin(event) {
 		event.preventDefault()
 		const { user, error: authError } = await supabase.auth.signIn({
@@ -42,7 +41,7 @@
 			<input type="password" bind:value={password} />
 		</label>
 		<button type="submit">Логин</button>
-		<a href="registration" style="color: black">Регистрация</a>
+		<button type="submit" ><a href="registration" style="color: black">Регистрация</a></button>
 	</form>
 	{#if error}
 		<p>{error}</p>

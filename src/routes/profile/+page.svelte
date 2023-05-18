@@ -234,7 +234,7 @@
 						</PopUp>
 					</ul>
 				{/if}
-				<button><img src="icons/ui/location.svg" alt="">  {userInfo.address}</button>
+				<button><img src="icons/ui/location.svg" alt="">  {user.address}</button>
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
 			</div>
 		</div>
@@ -339,6 +339,7 @@
 		flex-direction: column;
 		gap: 20px;
 		padding:16px 90px 71px 62px;
+		min-width: 300px;
 		box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.25);
 		background: white;
 		border-radius: 18px;
