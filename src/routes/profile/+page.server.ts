@@ -1,9 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
 
-
-
-
-
 export const actions = {
 	update: async ({ request, locals: { supabase, getSession } }) => {
 		const formData = await request.formData();

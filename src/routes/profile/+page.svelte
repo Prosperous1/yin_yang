@@ -16,7 +16,7 @@
 	let isUpdate = false;
 
 	export let data;
-	$: ({ user, userInfo,session, supabase, delivery_address, userData } = data);
+	$: ({ user, userProfile,session, supabase, delivery_address, userData } = data);
 
 	let profileForm: any;
 	let dataForm: any;
@@ -91,7 +91,7 @@
 		<div class="card-prof-up">
 			<div class="container">
 				<div>
-					<h1>{userInfo.first_name}</h1>
+					<h1>{userProfile.userInfo.first_name}</h1>
 					<div class="card-progress">
 						<img src="icons/ui/flower.svg" alt="">
 						<p>Частый гость</p>
@@ -112,7 +112,7 @@
 				<h1>Личное</h1>
 				<div class="personal-desc">
 					<img src="icons/ui/accountgrey.svg" alt="">
-					<p>{userInfo.first_name} {userInfo.last_name}</p>
+					<p>{userProfile.userInfo.first_name} {userProfile.userInfo.last_name}</p>
 				</div>
 				<div class="personal-desc">
 					<img src="icons/ui/message.svg" alt="">{user.email}
@@ -259,7 +259,9 @@
 							{/if}
 						</ul>
 				{/if}
-				<button><img src="icons/ui/location.svg" alt=""></button>
+				{#each userProfile.userAddresses as address}
+					<p>{Object.values(address)[1]}</p>
+				{/each}
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
 			</div>
 		</div>
