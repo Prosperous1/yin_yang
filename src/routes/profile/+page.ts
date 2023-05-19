@@ -10,7 +10,6 @@ export const load: PageLoad = async ({ parent }) => {
 	}
 
 
-
 	let { data: user} = await supabase
 		.from('user')
 		.select('user_uuid')
@@ -47,4 +46,6 @@ export const load: PageLoad = async ({ parent }) => {
 		user: session.user,
 		userInfo: userInfo,
 	};
+
+
 }

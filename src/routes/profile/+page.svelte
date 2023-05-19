@@ -81,6 +81,7 @@
 		dispatch('close')
 	}
 
+
 	export let  form;
 
 </script>
@@ -258,7 +259,7 @@
 							{/if}
 						</ul>
 				{/if}
-				<button><img src="icons/ui/location.svg" alt="">  {user.address}</button>
+				<button><img src="icons/ui/location.svg" alt=""></button>
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
 			</div>
 		</div>

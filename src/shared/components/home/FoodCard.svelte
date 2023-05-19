@@ -9,23 +9,6 @@
 
 	const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
-	// const user = await getUser();
-	// export let product;
-	//
-	// async function addToFavorites() {
-	// 	// Вставьте информацию о товаре в таблицу "Избранное"
-	// 	const { data, error } = await supabase
-	// 		.from('favorites')
-	// 		.insert({ product_id: product.id,user_id: user[0].id });
-	//
-	// 	if (error) {
-	// 		console.error(error);
-	// 	} else {
-	// 		console.log('Товар успешно добавлен в избранное!');
-	// 	}
-	// }
-	//
 </script>
 
 <div class="container">
@@ -58,6 +41,7 @@
 		padding-bottom: 105px;
 
 		margin-bottom: 67px;
+		margin-right: 140px;
 
 		width: 318px;
 

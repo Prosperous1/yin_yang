@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import {page} from "$app/stores";
+
 
 
 
@@ -50,6 +50,7 @@ export const actions = {
 				{ address: address, user_id: user[0].id },
 			])
 
+
 		if (error) {
 			return fail(500, {
 				address,
@@ -59,6 +60,7 @@ export const actions = {
 		return {
 			address,
 		};
+
 	},
 
 	// insertt:async ({request, locals:{supabase} })=>{
