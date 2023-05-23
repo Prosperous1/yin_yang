@@ -22,8 +22,6 @@ export const load: PageLoad = async ({ parent }) => {
 		const { data, error } = await supabase
 			.from('user')
 			.insert([{
-				order_id: null,
-				cart_id: null,
 				first_name: 'Change',
 				last_name: 'Me',
 				rating: '1',
