@@ -122,7 +122,7 @@
 				<div class="personal-desc">
 					<img src="icons/ui/call.svg" alt="">{user.phone}
 				</div>
-				<button on:click={swapPopup}>Изменить</button>
+				<div class="btn"><button on:click={swapPopup}>Изменить</button></div>
 				<PopUp class="personal" {isOpen} on:close={swapPopup}>
 					<main>
 						<h1>Личное</h1>
@@ -262,15 +262,20 @@
 						</ul>
 				{/if}
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
-				{#each userProfile.userAddresses as address }
-					<p>{address.address}</p>
-				{/each }
+				<div class="address">
+						{#each userProfile.userAddresses as address }
+							<div class="address-contaner">
+								<p>{address.address}</p>
+								<button>-</button>
+							</div>
+						{/each }
+				</div>
 			</div>
 		</div>
 	</div>
 
 	<form action="/logout" method="post" use:enhance={handleSignOut}>
-		<button disabled={loading} type="submit">Sign out</button>
+		<button disabled={loading} type="submit" class="logout-btn">Sign out</button>
 	</form>
 </section>
 
@@ -302,6 +307,16 @@
 		cursor: pointer;
 		padding: 0;
 	}
+	.logout-btn{
+		display: flex;
+		font-size: 26px;
+		background: none;
+		color: #5d5959;
+		padding: 20px 10pc 0px 10px;
+	}
+	.logout-btn:hover{
+		color: red;
+	}
 	.ava{
 		border-radius: 100px;
 	}
@@ -332,6 +347,27 @@
 		box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.25);
 		background: white;
 		border-radius: 18px;
+	}
+	.address{
+		display: flex;
+		flex-direction: column;
+		font-size: 22px;
+		font-weight: 800;
+		color: #5d5959;
+
+		button{
+			display: flex;
+			font-size: 20px;
+		}
+
+	}
+	.address-contaner{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+
 	}
 
 	.card-progress{
@@ -417,6 +453,21 @@
 			font-weight: 900;
 			font-size: 20px;
 		}
+	}
+	.btn{
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-around;
+
+		padding: 10px 2px 8px 10px;
+		margin-top: 70px;
+
+		background: #efefef;
+		color: #636363;
+
+		border-radius: 14px;
+		font-weight: 900;
+		font-size: 20px;
 	}
 
 	.personal-desc{

@@ -130,6 +130,9 @@
 		color: white;
 		font-size: 22px;
 	}
+	img{
+		border-radius: 16px 16px 0px 0px;
+	}
 
 	button {
 		background: #030303;
