@@ -128,7 +128,7 @@
 		border-radius: 18px;
 
 		color: white;
-		font-size: 24px;
+		font-size: 22px;
 	}
 
 	button {

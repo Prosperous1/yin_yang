@@ -4,9 +4,20 @@
 	import SectionHeading from "../shared/components/SectionHeading.svelte";
 	import ConstructorCard from "../shared/components/home/ConstructorCard.svelte";
 	import Filter from "../shared/components/Filter.svelte";
+	// import { onMount, reactive } from 'svelte';
 	import FoodCard from "../shared/components/home/FoodCard.svelte";
 
-	const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
+	// const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
+	//
+	// const selectedCategory = reactive('All');
+	//
+	// $: filteredProducts = products.filter(product => selectedCategory === 'All' || product.category === selectedCategory);
+	// const selectCategory = (category) => {
+	// 	selectedCategory.set(category);
+	// };
+	// $: {
+	// 	filterItems = ['All', ...new Set(products.map(product => product.category))];
+	// }
 
 	export let data: PageData;
 
@@ -67,6 +78,7 @@
 				column="column"
 				description="/// ДИАМЕТР 33 см. // ОСНОВА ИЗ МЕНЮ / ДОБАВКИ ПО ВКУСУ"/>
 			<p>&</p>
+
 			<ConstructorCard
 				title="Вок на свой вкус"
 				image="icons/ui/bg_wok.svg"

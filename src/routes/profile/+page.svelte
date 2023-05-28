@@ -15,8 +15,10 @@
 	let isPopupOpen = false;
 	let isUpdate = false;
 
+
+
 	export let data;
-	$: ({ user, userInfo,session, supabase, delivery_address, userData } = data);
+	$: ({ user, userInfo,session, supabase, delivery_address } = data);
 
 	let profileForm: any;
 	let dataForm: any;
@@ -260,6 +262,9 @@
 						</ul>
 				{/if}
 				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
+				<!--{#each users as user }-->
+				<!--	<p>{user.address_delivery}</p>-->
+				<!--{/each }-->
 			</div>
 		</div>
 	</div>

@@ -1,5 +1,6 @@
 <script>
 	export let filterItems;
+	// export let selectedCategory;
 </script>
 
 <div>
