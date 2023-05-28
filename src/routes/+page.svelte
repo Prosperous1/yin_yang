@@ -4,25 +4,28 @@
 	import SectionHeading from "../shared/components/SectionHeading.svelte";
 	import ConstructorCard from "../shared/components/home/ConstructorCard.svelte";
 	import Filter from "../shared/components/Filter.svelte";
-	// import { onMount, reactive } from 'svelte';
 	import FoodCard from "../shared/components/home/FoodCard.svelte";
 
-	// const filterItems = ["Сеты", "Пицца", "Суши", "Закуски"];
-	//
-	// const selectedCategory = reactive('All');
-	//
-	// $: filteredProducts = products.filter(product => selectedCategory === 'All' || product.category === selectedCategory);
-	// const selectCategory = (category) => {
-	// 	selectedCategory.set(category);
-	// };
-	// $: {
-	// 	filterItems = ['All', ...new Set(products.map(product => product.category))];
-	// }
+	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Закуски"];
 
 	export let data: PageData;
 
+	let filteredProducts = []
+
 	let { products } = data;
 	$: ({ products } = data);
+
+	function onFilter(filterCategory) {
+		if (filterCategory === "Все") {
+			filteredProducts = [];
+		}
+
+		filteredProducts = products.filter(
+			product => {
+				return product.category.title === filterCategory
+			}
+		)
+	}
 </script>
 
 <section>
@@ -90,20 +93,34 @@
 	<div id="menu">
 		<div class="menu_heading">
 			<SectionHeading title="Меню" icon="icons/ui/menu.svg" --font-size="36px"/>
-			<Filter filterItems={filterItems}/>
+			<Filter filterItems={filterItems} onFilter={onFilter}/>
 		</div>
 		<div class="food_items_container">
-			{#each products as {count, title, weight, image_url, description, price, category}}
-				<FoodCard
-					{count}
-					{title}
-					{weight}
-					{image_url}
-					{description}
-					{price}
-					{category}
-				/>
-			{/each}
+			{#if filteredProducts.length === 0}
+				{#each products as {count, title, weight, image_url, description, price, category}}
+					<FoodCard
+						{count}
+						{title}
+						{weight}
+						{image_url}
+						{description}
+						{price}
+						{category}
+					/>
+				{/each}
+				{:else }
+				{#each filteredProducts as {count, title, weight, image_url, description, price, category}}
+					<FoodCard
+						{count}
+						{title}
+						{weight}
+						{image_url}
+						{description}
+						{price}
+						{category}
+					/>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </section>

@@ -1,11 +1,11 @@
 <script>
-	export let filterItems;
+	export let filterItems, onFilter;
 	// export let selectedCategory;
 </script>
 
 <div>
 	{#each filterItems as item}
-		<button>
+		<button on:click={onFilter(item)}>
 			{item}
 		</button>
 	{/each}

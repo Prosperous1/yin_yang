@@ -38,12 +38,32 @@ export const load: PageLoad = async ({ parent }) => {
 			session.user.id
 		).single()
 
-	console.log(userInfo)
+	let {data: userAddresses} = await supabase
+		.from('delivery_address')
+		.select('*')
+		.eq(
+			'user_id',
+			userInfo.id
+		)
+
+	let {data: userFavorite} = await supabase
+		.from('favorite')
+		.select("*, product_id(*, category_id(title))")
+		.eq(
+			'user_id',
+			userInfo.id
+		)
+
+	const userProfile = {
+		userInfo: userInfo,
+		userAddresses: userAddresses,
+		userFavorite: userFavorite
+	}
+
+	console.log(userProfile)
 
 	return {
 		user: session.user,
-		userInfo: userInfo,
+		userProfile: userProfile,
 	};
-
-
 }
