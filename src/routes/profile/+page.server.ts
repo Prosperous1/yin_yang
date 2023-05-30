@@ -58,29 +58,4 @@ export const actions = {
 		};
 
 	},
-
-	// insertt:async ({request, locals:{supabase} })=>{
-	// 	const formData = await request.formData();
-	// 	const email = formData.get('email') as string;
-	// 	const phone = formData.get('pfone') as string;
-	//
-	// 	const { error } = await supabase
-	// 	.from('authentication')
-	// 		.insert([		{
-	// 			email: email,
-	// 			phone: phone
-	// 		}])
-	// 	if (error) {
-	// 		return fail(500, {
-	// 			email,
-	// 			phone
-	// 		});
-	// 	}
-	//
-	// 	return {
-	// 		email,
-	// 		phone
-	// 	};
-	// }
-
 };

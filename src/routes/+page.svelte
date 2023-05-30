@@ -6,7 +6,7 @@
 	import Filter from "../shared/components/Filter.svelte";
 	import FoodCard from "../shared/components/home/FoodCard.svelte";
 
-	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Закуски"];
+	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Снеки","Супы"];
 
 	export let data: PageData;
 

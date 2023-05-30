@@ -1,7 +1,7 @@
 <script>
 	import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
 
-	export let title, description, count, weight, price, image_url, category;
+	export let title, description, count, weight, price, image_url, category, PageData;
 	import { createClient } from '@supabase/supabase-js'
 
 	const supabaseUrl = PUBLIC_SUPABASE_URL
@@ -9,6 +9,19 @@
 
 	const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+	async function  addToFavorites (userId, productId) {
+		const { error } = await supabase
+			.from('favorite')
+			.insert({
+				user_id: userId,
+				product_id: productId,
+			});
+
+		if (error) {
+			console.log(error);
+			return null;
+		}
+	}
 </script>
 
 <div class="container">
@@ -24,9 +37,9 @@
 		</div>
 		<p class="description">{description}</p>
 	</div>
-	<button class="like_btn" >
-		<img src="icons/ui/heart.svg" alt="Add to Favourite">
-	</button>
+	<button class="like_btn" on:click={() => addToFavorites(userId, productId)}>
+				<img src="icons/ui/heart.svg" alt="Add to Favourite">
+		</button>
 	<button class="price_btn">
 		<span>{price} ₽</span>
 	</button>
