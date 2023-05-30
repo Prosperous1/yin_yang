@@ -1,8 +1,9 @@
 <script>
 	import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
 
-	export let title, description, count, weight, price, image_url, category, PageData;
+	export let title, description, count, weight, price, image_url, category, PageData, id;
 	import { createClient } from '@supabase/supabase-js'
+	import {page} from "$app/stores";
 
 	const supabaseUrl = PUBLIC_SUPABASE_URL
 	const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY
@@ -37,7 +38,7 @@
 		</div>
 		<p class="description">{description}</p>
 	</div>
-	<button class="like_btn" on:click={() => addToFavorites(userId, productId)}>
+	<button class="like_btn" on:click={() => addToFavorites($page.data.dbUser.data.id, id)}>
 				<img src="icons/ui/heart.svg" alt="Add to Favourite">
 		</button>
 	<button class="price_btn">

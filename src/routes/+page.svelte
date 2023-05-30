@@ -97,7 +97,7 @@
 		</div>
 		<div class="food_items_container">
 			{#if filteredProducts.length === 0}
-				{#each products as {count, title, weight, image_url, description, price, category}}
+				{#each products as {count, title, weight, image_url, description, price, category, id}}
 					<FoodCard
 						{count}
 						{title}
@@ -106,10 +106,11 @@
 						{description}
 						{price}
 						{category}
+						{id}
 					/>
 				{/each}
 				{:else }
-				{#each filteredProducts as {count, title, weight, image_url, description, price, category}}
+				{#each filteredProducts as {count, title, weight, image_url, description, price, category, id}}
 					<FoodCard
 						{count}
 						{title}
@@ -118,6 +119,7 @@
 						{description}
 						{price}
 						{category}
+						{id}
 					/>
 				{/each}
 			{/if}
