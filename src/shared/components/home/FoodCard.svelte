@@ -8,6 +8,10 @@
 	export let title, description, count, weight, price, image_url, category, PageData, id;
 	let isFav = false;
 
+	async function setFavStatus() {
+		isFav = await isFavorite($page.data.dbUser.data.id, id);
+	}
+
 	async function addToFavorites(userId, productId) {
 		const { error } = await supabase.from("favorite").insert({
 			user_id: userId,
@@ -18,7 +22,9 @@
 			return null;
 		}
 		isFav = true;
+		setFavStatus();
 	}
+
 	async function removeFromFavorites(userId, productId) {
 		const { error } = await supabase
 			.from("favorite")
@@ -30,16 +36,23 @@
 			return null;
 		}
 		isFav = false;
+		setFavStatus();
 	}
+
 	async function isFavorite(userId, productId) {
-		const { data } = await supabase
+		const { data, error } = await supabase
 			.from("favorite")
 			.select()
 			.eq("user_id", userId)
 			.eq("product_id", productId);
+		if (error) {
+			console.log(error);
+			return false;
+		}
 		return data.length > 0;
 	}
 </script>
+
 <div class="container">
 	<img src={image_url} alt="Product Image" />
 	<div class="over_pic">
@@ -54,31 +67,29 @@
 		<p class="description">{description}</p>
 	</div>
 	{#if $page.data.dbUser}
-	{#await isFavorite($page.data.dbUser.data.id, id) then fav}
-		{#if isFav}
-			<button
-				class="unlike_btn"
-				on:click={() => {
-          removeFromFavorites($page.data.dbUser.data.id, id);
-        }}
-				hidden={!isFav}
-			>
-				<img src="icons/ui/union.svg" alt="Remove to Favourite" />
-			</button>
-		{:else}
-			<button
-				class="like_btn"
-				on:click={() => {
-          addToFavorites($page.data.dbUser.data.id, id);
-        }}
-				hidden={isFav}
-			>
-				<img src="icons/ui/heart.svg" alt="Add to Favourite" />
-			</button>
-		{/if}
-	{:catch error}
-		<p>{error.message}</p>
-	{/await}
+		{#await setFavStatus() then _}
+			{#if isFav}
+				<button
+					class="unlike_btn"
+					on:click={() => {
+            removeFromFavorites($page.data.dbUser.data.id, id);
+          }}
+					hidden={!isFav}
+				>
+					<img src="icons/ui/union.svg" alt="Remove to Favourite" />
+				</button>
+			{:else}
+				<button
+					class="like_btn"
+					on:click={() => {
+            addToFavorites($page.data.dbUser.data.id, id);
+          }}
+					hidden={isFav}
+				>
+					<img src="icons/ui/heart.svg" alt="Add to Favourite" />
+				</button>
+			{/if}
+		{/await}
 	{/if}
 	<button class="price_btn">
 		<span>{price} ₽</span>
