@@ -53,6 +53,7 @@
 		</div>
 		<p class="description">{description}</p>
 	</div>
+	{#if $page.data.dbUser}
 	{#await isFavorite($page.data.dbUser.data.id, id) then fav}
 		{#if isFav}
 			<button
@@ -78,6 +79,7 @@
 	{:catch error}
 		<p>{error.message}</p>
 	{/await}
+	{/if}
 	<button class="price_btn">
 		<span>{price} ₽</span>
 	</button>
