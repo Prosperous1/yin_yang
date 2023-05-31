@@ -1,32 +1,47 @@
 <script>
-	import {PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL} from "$env/static/public";
-
-	export let title, description, count, weight, price, image_url, category, PageData, id;
-	import { createClient } from '@supabase/supabase-js'
-	import {page} from "$app/stores";
-
-	const supabaseUrl = PUBLIC_SUPABASE_URL
-	const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY
-
+	import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$env/static/public";
+	import { createClient } from "@supabase/supabase-js";
+	import { page } from "$app/stores";
+	const supabaseUrl = PUBLIC_SUPABASE_URL;
+	const supabaseAnonKey = PUBLIC_SUPABASE_ANON_KEY;
 	const supabase = createClient(supabaseUrl, supabaseAnonKey);
+	export let title, description, count, weight, price, image_url, category, PageData, id;
+	let isFav = false;
 
-	async function  addToFavorites (userId, productId) {
-		const { error } = await supabase
-			.from('favorite')
-			.insert({
-				user_id: userId,
-				product_id: productId,
-			});
-
+	async function addToFavorites(userId, productId) {
+		const { error } = await supabase.from("favorite").insert({
+			user_id: userId,
+			product_id: productId,
+		});
 		if (error) {
 			console.log(error);
 			return null;
 		}
+		isFav = true;
+	}
+	async function removeFromFavorites(userId, productId) {
+		const { error } = await supabase
+			.from("favorite")
+			.delete()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+		if (error) {
+			console.log(error);
+			return null;
+		}
+		isFav = false;
+	}
+	async function isFavorite(userId, productId) {
+		const { data } = await supabase
+			.from("favorite")
+			.select()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+		return data.length > 0;
 	}
 </script>
-
 <div class="container">
-	<img src={image_url} alt="Product Image">
+	<img src={image_url} alt="Product Image" />
 	<div class="over_pic">
 		<p class="count">{count} шт.</p>
 		<p class="count">{category.title}</p>
@@ -38,14 +53,35 @@
 		</div>
 		<p class="description">{description}</p>
 	</div>
-	<button class="like_btn" on:click={() => addToFavorites($page.data.dbUser.data.id, id)}>
-				<img src="icons/ui/heart.svg" alt="Add to Favourite">
-		</button>
+	{#await isFavorite($page.data.dbUser.data.id, id) then fav}
+		{#if isFav}
+			<button
+				class="unlike_btn"
+				on:click={() => {
+          removeFromFavorites($page.data.dbUser.data.id, id);
+        }}
+				hidden={!isFav}
+			>
+				<img src="icons/ui/union.svg" alt="Remove to Favourite" />
+			</button>
+		{:else}
+			<button
+				class="like_btn"
+				on:click={() => {
+          addToFavorites($page.data.dbUser.data.id, id);
+        }}
+				hidden={isFav}
+			>
+				<img src="icons/ui/heart.svg" alt="Add to Favourite" />
+			</button>
+		{/if}
+	{:catch error}
+		<p>{error.message}</p>
+	{/await}
 	<button class="price_btn">
 		<span>{price} ₽</span>
 	</button>
 </div>
-
 <style lang="scss">
 	.container {
 		display: flex;
@@ -129,6 +165,21 @@
 		width: 15%;
 
 		border-radius: 10px;
+	}
+	.unlike_btn{
+		bottom: 95px;
+		left: 24px;
+		margin-left: 24px;
+		padding: 5px 8px;
+		width: 15%;
+		height: 45px;
+
+		border-radius: 10px;
+
+		img{
+			width: 60px;
+			height: 60px;
+		}
 	}
 
 	.price_btn{
