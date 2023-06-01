@@ -522,6 +522,7 @@
 		overflow-x: auto;
 		overflow: hidden;
 		gap: 49px;
+		border-radius: 12px;
 
 	}
 
