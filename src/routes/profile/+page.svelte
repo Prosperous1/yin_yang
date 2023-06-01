@@ -3,6 +3,8 @@
 	import {invalidate} from "$app/navigation";
 	import PopUp from "../../shared/components/service/PopUp.svelte";
 	import { slide } from 'svelte/transition'
+	import { onMount } from 'svelte';
+	import { enableHorizontalScroll } from './scroll';
 
 	let isExpanded = false
 
@@ -10,15 +12,22 @@
 		isExpanded = !isExpanded
 	}
 
-
 	let isOpen = false;
 	let isPopupOpen = false;
 	let isUpdate = false;
 
 
+	// scroll
+	let container: HTMLElement;
+
+	onMount(() => {
+		const cleanup = enableHorizontalScroll(container);
+
+		return cleanup;
+	});
 
 	export let data;
-	$: ({ user, userProfile, session, supabase, delivery_address } = data);
+	$: ({ user, userProfile, session, supabase, delivery_address,userFavorite } = data);
 
 	let profileForm: any;
 	let dataForm: any;
@@ -107,6 +116,23 @@
 				<div class="card-progress">
 					<button><img src="icons/ui/heart.svg" alt=""> Любимое</button>
 				</div>
+			</div>
+		</div>
+		<div class="favorite-wrapper">
+			<div class="favorite-container" bind:this={container}>
+				{#each userProfile.userFavorite as item}
+					<div class="favorite-card">
+						<div>
+							<img src="{item.product_id.image_url}" alt="Pictures">
+						</div>
+							<div class="card-up-desc">
+								<h3>{item.product_id.title}</h3>
+								<p>{item.product_id.weight}гр.</p>
+								<h4>{item.product_id.price}руб.</h4>
+							</div>
+
+					</div>
+				{/each}
 			</div>
 		</div>
 		<div class="card-prof-low">
@@ -486,5 +512,66 @@
 		display: flex;
 		flex-direction: row;
 		gap: 50px;
+	}
+
+	.favorite-container{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		overflow-x: auto;
+		overflow: hidden;
+		gap: 49px;
+
+	}
+
+	.favorite-card{
+		display: flex;
+
+		min-width: 450px;
+		height: 190px;
+		background: #FFFFFF;
+		box-shadow:  0px 0px 24px -3px rgba(0, 0, 0, 0.25);
+		border-radius: 48px;
+
+		p{
+			font-weight: 900;
+			font-size: 30px;
+		}
+
+		img{
+			width: 185px;
+			height: 190px;
+			border-radius: 16px;
+		}
+	}
+	.favorite-desc{
+		display: flex;
+		flex-direction: column;
+		margin: 0 auto;
+
+
+	}
+	.card-up-desc{
+		display: flex;
+		flex-direction: column;
+		max-height: 200px;
+		padding-left: 20px;
+		p{
+			font-weight: 800;
+			font-size: 18px;
+			color: #6B6B6B;
+			margin: 0;
+
+		}
+
+		h3{
+			font-weight: 900;
+			font-size: 24px;
+		}
+		h4{
+			font-weight: 900;
+			font-size: 24px;
+		}
 	}
 </style>

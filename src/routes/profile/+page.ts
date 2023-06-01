@@ -59,7 +59,7 @@ export const load: PageLoad = async ({ parent }) => {
 		userAddresses: userAddresses,
 		userFavorite: userFavorite
 	}
-
+	console.log(userFavorite)
 	console.log(userProfile)
 
 	return {
