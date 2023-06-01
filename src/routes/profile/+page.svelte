@@ -519,21 +519,28 @@
 		flex-direction: row;
 		flex-wrap: nowrap;
 		justify-content: flex-start;
+
+		max-height: 500px;
+
 		overflow-x: auto;
 		overflow: hidden;
+
 		gap: 49px;
 		border-radius: 12px;
 
+		mask-image: linear-gradient(to right, transparent, white 10px, white 90%, transparent);
+		cursor: grab;
 	}
 
 	.favorite-card{
 		display: flex;
 
 		min-width: 450px;
-		height: 190px;
+		max-height: 190px;
 		background: #FFFFFF;
-		box-shadow:  0px 0px 24px -3px rgba(0, 0, 0, 0.25);
+		box-shadow:  0px 0px 22px -2px rgba(0, 0, 0, 0.25);
 		border-radius: 48px;
+		margin: 15px;
 
 		p{
 			font-weight: 900;
