@@ -75,7 +75,7 @@
 		{/if}
 	</a>
 	{:else}
-		<button on:click={swapPopup}  class="btn-acc"><img src="/icons/ui/account.svg"></button>
+		<button on:click={swapPopup}  class="btn-acc"><img src="/icons/ui/Logout.svg"></button>
 		<PopUp {isOpen} on:close={swapPopup}>
 			<main>
 				<h1>Войти</h1>

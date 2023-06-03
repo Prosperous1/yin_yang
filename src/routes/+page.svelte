@@ -5,12 +5,15 @@
 	import ConstructorCard from "../shared/components/home/ConstructorCard.svelte";
 	import Filter from "../shared/components/Filter.svelte";
 	import FoodCard from "../shared/components/home/FoodCard.svelte";
+	import PopUp from "../shared/components/service/PopUp.svelte";
 
 	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Снеки","Супы"];
 
 	export let data: PageData;
 
 	let filteredProducts = []
+	let isOpen = false;
+	let isPopupOpen = false;
 
 	let { products } = data;
 	$: ({ products } = data);
@@ -25,6 +28,10 @@
 				return product.category.title === filterCategory
 			}
 		)
+	}
+
+	function swapPopup() {
+		isOpen = !isOpen;
 	}
 </script>
 
@@ -74,20 +81,55 @@
 	<div>
 		<SectionHeading title="Собери сам" icon="icons/ui/constructor.svg" --font-size="42px"/>
 		<div class="contstructors">
-			<ConstructorCard
-				title="Пицца на свой вкус"
-				image="icons/ui/bg_pizza.svg"
-				notReversed="1"
-				column="column"
-				description="/// ДИАМЕТР 33 см. // ОСНОВА ИЗ МЕНЮ / ДОБАВКИ ПО ВКУСУ"/>
+			<button class="btn-construct" on:click={swapPopup}>
+				<ConstructorCard
+					title="Пицца на свой вкус"
+					image="icons/ui/bg_pizza.svg"
+					notReversed="1"
+					column="column"
+					description="/// ДИАМЕТР 33 см. // ОСНОВА ИЗ МЕНЮ / ДОБАВКИ ПО ВКУСУ"/>
+			</button>
+			<PopUp class="personal" {isOpen} on:close={swapPopup}>
+				<main class="description-constr">
+					<h1>Конструктор</h1>
+					<img src="image/constructor.jpg" alt="">
+					<h2>WOK-лапша</h2>
+					<p>Основа из моркови, болгарского перца, <br>
+						грибов, цукини и стручковой фасоли. </p>
+					<h3>Лапша/Рис</h3>
+					<form>
+						<input type="radio" name="type" value="Лапша" checked> Лапша<br>
+						<input type="radio" name="type" value="Рис"> Рис<br>
+						<input type="radio" name="type" value="Пшено"> Пшено<br>
+					</form>
+				</main>
+			</PopUp>
+
 			<p>&</p>
 
+			<button class="btn-construct" on:click={swapPopup}>
 			<ConstructorCard
 				title="Вок на свой вкус"
 				image="icons/ui/bg_wok.svg"
 				notReversed="-1"
 				column="column-reverse"
 				description="ОБЪЁМ 300 мл. \\\ Цена: 160 ₽ \\ ДОБАВКИ ПО ВКУСУ \"/>
+			</button>
+			<PopUp class="personal" {isOpen} on:close={swapPopup}>
+				<main class="description-constr">
+					<h1>Конструктор</h1>
+					<img src="image/constructor.jpg" alt="">
+					<h2>WOK-лапша</h2>
+					<p>Основа из моркови, болгарского перца, <br>
+						грибов, цукини и стручковой фасоли. </p>
+					<h3>Лапша/Рис</h3>
+					<form>
+						<input type="radio" name="type" value="Лапша" checked> Лапша<br>
+						<input type="radio" name="type" value="Рис"> Рис<br>
+						<input type="radio" name="type" value="Пшено"> Пшено<br>
+					</form>
+				</main>
+			</PopUp>
 		</div>
 	</div>
 	<div id="menu">
@@ -233,6 +275,16 @@
 
 			text-shadow: 0 4px 32px rgba(0, 0, 0, 0.45);
 		}
+	}
+
+	.description-constr{
+		p{
+			font-size: 18px;
+			text-shadow: none;
+		}
+	}
+	.btn-construct{
+		background: none;
 	}
 
 	.menu_heading {
