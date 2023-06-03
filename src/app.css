@@ -1,12 +1,4 @@
-@font-face {
-	font-family: Overpass;
-	src: url("fonts/Overpass-VariableFont_wght.ttf");
-}
-
-@font-face {
-	font-family: Bungee;
-	src: url("fonts/Bungee-Regular.ttf");
-}
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Overpass:wght@400;500;600;700;800;900&display=swap');
 
 html {
     font-family: Overpass, sans-serif;
