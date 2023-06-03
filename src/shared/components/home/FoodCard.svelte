@@ -7,9 +7,34 @@
 	const supabase = createClient(supabaseUrl, supabaseAnonKey);
 	export let title, description, count, weight, price, image_url, category, PageData, id;
 	let isFav = false;
+	let isInCart = false;
 
 	async function setFavStatus() {
 		isFav = await isFavorite($page.data.dbUser.data.id, id);
+	}
+	async function setCartStatus() {
+		isInCart = await isInUserCart($page.data.dbUser.data.id, id);
+	}
+
+	async function isInUserCart(userId, productId) {
+		const { data, error } = await supabase
+			.from("cart_item")
+			.select()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+		if (error) {
+			console.log(error);
+			return false;
+		}
+		return data.length > 0;
+	}
+	async function toggleCart(userId, productId) {
+		if (isInCart) {
+			await removeFromCart(userId, productId);
+		} else {
+			await addToCart(userId, productId);
+		}
+		setCartStatus();
 	}
 
 	async function addToFavorites(userId, productId) {
@@ -23,6 +48,40 @@
 		}
 		isFav = true;
 		setFavStatus();
+	}
+
+	async function addToCart(userId, productId) {
+		const { error } = await supabase.from("cart_item").insert({
+			user_id: userId,
+			product_id: productId,
+		});
+		if (error) {
+			console.log(error);
+			return null;
+		}
+		const button = document.querySelector(`.price_btn[data-id="${productId}"]`);
+		button.disabled = false;
+		button.textContent = "Удалить из корзины";
+		button.removeEventListener("click", addToCart);
+		button.addEventListener("click", () => removeFromCart($page.data.dbUser.data.id, id));
+	}
+
+	// Функция удаления товара из корзины
+	async function removeFromCart(userId, productId) {
+		const { error } = await supabase
+			.from("cart_item")
+			.delete()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+		if (error) {
+			console.log(error);
+			return null;
+		}
+		const button = document.querySelector(`.price_btn[data-id="${productId}"]`);
+		button.disabled = false;
+		button.textContent = `${price} ₽`;
+		button.removeEventListener("click", removeFromCart);
+		button.addEventListener("click", () => addToCart(userId, productId));
 	}
 
 	async function removeFromFavorites(userId, productId) {
@@ -71,9 +130,7 @@
 			{#if isFav}
 				<button
 					class="unlike_btn"
-					on:click={() => {
-            removeFromFavorites($page.data.dbUser.data.id, id);
-          }}
+					on:click={removeFromFavorites($page.data.dbUser.data.id, id)}
 					hidden={!isFav}
 				>
 					<img src="icons/ui/union.svg" alt="Remove to Favourite" />
@@ -81,19 +138,23 @@
 			{:else}
 				<button
 					class="like_btn"
-					on:click={() => {
-            addToFavorites($page.data.dbUser.data.id, id);
-          }}
+					on:click={addToFavorites($page.data.dbUser.data.id, id)}
 					hidden={isFav}
 				>
 					<img src="icons/ui/heart.svg" alt="Add to Favourite" />
 				</button>
 			{/if}
 		{/await}
+		{#await setCartStatus() then _}
+			<button
+				class="{isInCart ? 'price_btn delete-btn' : 'price_btn'}"
+				data-id="{id}"
+				on:click={() => toggleCart($page.data.dbUser.data.id, id)}
+			>
+				{isInCart ? "Удалить из корзины" : `${price} ₽`}
+			</button>
+		{/await}
 	{/if}
-	<button class="price_btn">
-		<span>{price} ₽</span>
-	</button>
 </div>
 <style lang="scss">
 	.container {
@@ -220,5 +281,17 @@
 		&:hover {
 			background: rgba(0, 0, 0, 0.85);
 		}
+	}
+
+	.delete-btn {
+		background-color: red;
+		bottom: 0;
+		padding: 20px 60px;
+		color: white;
+		border: none;
+		width: 100%;
+		border-radius: 18px;
+		font-size: 22px;
+		cursor: pointer;
 	}
 </style>
