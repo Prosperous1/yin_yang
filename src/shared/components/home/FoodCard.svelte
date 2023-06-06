@@ -49,7 +49,7 @@
 		isFav = true;
 		setFavStatus();
 	}
-
+	// Функция добавления товара в корзину
 	async function addToCart(userId, productId) {
 		const { error } = await supabase.from("cart_item").insert({
 			user_id: userId,
@@ -249,6 +249,7 @@
 		height: 45px;
 
 		border-radius: 10px;
+		background: #af0d0d;
 
 		img{
 			width: 60px;
@@ -284,7 +285,7 @@
 	}
 
 	.delete-btn {
-		background-color: red;
+		background-color: rgba(168, 26, 26, 0.93);
 		bottom: 0;
 		padding: 20px 60px;
 		color: white;

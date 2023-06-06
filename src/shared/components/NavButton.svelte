@@ -2,8 +2,6 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import {createEventDispatcher} from "svelte";
-	import { Auth } from '@supabase/auth-ui-svelte';
-	import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 	import type { ActionData } from './$types';
 

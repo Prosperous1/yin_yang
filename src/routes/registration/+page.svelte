@@ -51,7 +51,7 @@
 		</div>
 		<div class="field">
 			<p class="control">
-				<button disabled={loading} class="button is-fullwidth is-link">Войти</button>
+				<button disabled={loading} class="button is-fullwidth is-link">Зарегистрироваться</button>
 			</p>
 		</div>
 	</form>

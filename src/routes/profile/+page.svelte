@@ -125,12 +125,11 @@
 						<div>
 							<img src="{item.product_id.image_url}" alt="Pictures">
 						</div>
-							<div class="card-up-desc">
-								<h3>{item.product_id.title}</h3>
-								<p>{item.product_id.weight}гр.</p>
-								<h4>{item.product_id.price}руб.</h4>
-							</div>
-
+						<div class="card-up-desc">
+							<h3>{item.product_id.title}</h3>
+							<p>{item.product_id.weight}гр.</p>
+							<h4>{item.product_id.price}руб.</h4>
+						</div>
 					</div>
 				{/each}
 			</div>
@@ -540,7 +539,7 @@
 		background: #FFFFFF;
 		box-shadow:  0px 0px 22px -2px rgba(0, 0, 0, 0.25);
 		border-radius: 48px;
-		margin: 15px;
+		margin: 15px 1px 15px 1px;
 
 		p{
 			font-weight: 900;

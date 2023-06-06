@@ -1,4 +1,4 @@
-import type { PageLoad } from './$types';
+import type {PageLoad} from "../../../.svelte-kit/types/src/routes/$types";
 import { redirect } from '@sveltejs/kit';
 
 
