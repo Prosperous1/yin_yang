@@ -7,7 +7,7 @@
 	import FoodCard from "../shared/components/home/FoodCard.svelte";
 	import PopUp from "../shared/components/service/PopUp.svelte";
 
-	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Снеки","Супы"];
+	const filterItems = ["Все", "Сеты", "Пицца", "Суши", "Снеки","Супы","Роллы","Салаты"];
 
 	export let data: PageData;
 
