@@ -58,6 +58,72 @@
 </main>
 
 <style lang="scss">
-
-
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 2rem;
+	}
+	h1 {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+	form {
+		width: 100%;
+		max-width: 400px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem;
+		background-color: #f2f2f2;
+		border-radius: 10px;
+		box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	}
+	.field {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+	.label {
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+	.control {
+		width: 100%;
+	}
+	.input {
+		width: 100%;
+		padding: 0.5rem;
+		border-radius: 5px;
+		border: none;
+		background-color: #ffffff;
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+	}
+	.button {
+		width: 100%;
+		padding: 0.5rem;
+		border-radius: 5px;
+		border: none;
+		background-color: #E44857;
+		color: #ffffff;
+		font-size: 1.2rem;
+		cursor: pointer;
+		transition: background-color 0.2s ease-in-out;
+	}
+	.button:hover {
+		background-color: #d33e4c;
+	}
+	.notification {
+		padding: 1rem;
+		border-radius: 5px;
+		margin-bottom: 1rem;
+		font-size: 1.2rem;
+	}
+	.is-danger {
+		background-color: #e74c3c;
+		color: #ffffff;
+	}
+	.is-primary {
+		background-color: #3498db;
+		color: #ffffff;
+	}
 </style>

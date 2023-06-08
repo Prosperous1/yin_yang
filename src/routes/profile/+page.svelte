@@ -6,7 +6,30 @@
 	import { onMount } from 'svelte';
 	import { enableHorizontalScroll } from './scroll';
 
+
 	let isExpanded = false
+
+	let deliveryAddress = '';
+
+	function setDeliveryAddress(value) {
+		deliveryAddress = value;
+	}
+
+		const handleSubmitt: SubmitFunction = () => {
+			loading = true;
+			return async ({ result }) => {
+				if (result.type === 'redirect') {
+					await invalidate('supabase:auth');
+				} else {
+					await applyAction(result);
+				}
+				loading = false;
+				closeEditor();
+
+				// Обновляем адрес доставки
+				setDeliveryAddress(result.values.address);
+			};
+		};
 
 	function clickHandler() {
 		isExpanded = !isExpanded
@@ -49,22 +72,30 @@
 				await applyAction(result);
 			}
 			loading = false;
-
+			// Обновляем данные пользователя
+			firstName = result.values.first_name;
+			lastName = result.values.last_name;
+			email = result.values.email;
+			phone = result.values.phone;
 			swapPopup()
 		};
 	};
-	const handleSubmitt: SubmitFunction = () => {
-		loading = true;
-		return async ({ result }) => {
-			if (result.type === 'redirect') {
-				await invalidate('supabase:auth');
-			} else {
-				await applyAction(result);
-			}
-			loading = false;
-			closeEditor()
-		};
-	};
+	async function removeAddress(address) {
+		const index = userProfile.userAddresses.findIndex(a => a.id === address.id);
+		userProfile.userAddresses.splice(index, 1);
+		const { data, error } = await supabase.from('delivery_address').delete().match({ id: address.id });
+		if (error) {
+			console.log('Error deleting address:', error);
+		} else {
+			console.log('Deleted address:', data);
+			userProfile.userAddresses = userProfile.userAddresses.filter(a => a.id !== address.id);
+			refresh();
+		}
+	}
+	function handleRemoveAddressClick(event, address) {
+		event.preventDefault();
+		removeAddress(address);
+	}
 
 	const handleSignOut: SubmitFunction = () => {
 		loading = true;
@@ -291,7 +322,7 @@
 						{#each userProfile.userAddresses as address }
 							<div class="address-contaner">
 								<p>{address.address}</p>
-								<button>-</button>
+								<button on:click={(event) => handleRemoveAddressClick(event, address)}>-</button>
 							</div>
 						{/each }
 				</div>
@@ -547,6 +578,7 @@
 		}
 
 		img{
+			object-fit: cover;
 			width: 185px;
 			height: 190px;
 			border-radius: 16px;
