@@ -10,10 +10,6 @@
 					<li>
 						<a href="/#menu">Меню</a>
 					</li>
-					<ListItem link="/#pizza" title="Пицца"/>
-					<ListItem link="/#sushi" title="Суши"/>
-					<ListItem link="/#snacks" title="Снэки"/>
-					<ListItem link="/#wok" title="Вок"/>
 				</ul>
 				<ul>
 					<li>
@@ -24,9 +20,6 @@
 					<li>
 						<a href="/contacts">Контакты</a>
 					</li>
-					<ListItem link="/contacts#help" title="Пицца"/>
-					<ListItem link="/contacts#suggestions" title="Предложения"/>
-					<ListItem link="/contacts#quality" title="Качество"/>
 				</ul>
 			</nav>
 			<div class="contacts_container">

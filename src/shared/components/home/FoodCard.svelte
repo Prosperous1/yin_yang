@@ -8,6 +8,14 @@
 	export let title, description, count, weight, price, image_url, category, PageData, id;
 	let isFav = false;
 	let isInCart = false;
+	let popupEl;
+	let productQuantity = 1;
+
+	function showDescription() {
+		if (description.length > 100) { // замените 100 на желаемое количество символов
+			popupEl.style.display = "block";
+		}
+	}
 
 	async function setFavStatus() {
 		isFav = await isFavorite($page.data.dbUser.data.id, id);
@@ -29,14 +37,24 @@
 		return data.length > 0;
 	}
 	async function toggleCart(userId, productId) {
-		if (isInCart) {
+		const { data, error } = await supabase
+			.from("cart_item")
+			.select()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+
+		if (error) {
+			console.log(error);
+			return false;
+		}
+
+		if (data.length > 0) {
 			await removeFromCart(userId, productId);
 		} else {
 			await addToCart(userId, productId);
 		}
 		setCartStatus();
 	}
-
 	async function addToFavorites(userId, productId) {
 		const { error } = await supabase.from("favorite").insert({
 			user_id: userId,
@@ -51,20 +69,52 @@
 	}
 	// Функция добавления товара в корзину
 	async function addToCart(userId, productId) {
-		const { error } = await supabase.from("cart_item").insert({
-			user_id: userId,
-			product_id: productId,
-		});
+		const { data, error } = await supabase
+			.from("cart_item")
+			.select()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+
 		if (error) {
 			console.log(error);
 			return null;
 		}
+
+		if (data.length > 0) {
+			// Update existing cart item
+			const cartItemId = data[0].id;
+			const currentQuantity = data[0].quantity;
+			const newQuantity = currentQuantity + productQuantity;
+
+			const { error } = await supabase
+				.from("cart_item")
+				.update({ quantity: newQuantity })
+				.eq("id", cartItemId);
+
+			if (error) {
+				console.log(error);
+				return null;
+			}
+		} else {
+			// Add new cart item
+			const { error } = await supabase.from("cart_item").insert({
+				user_id: userId,
+				product_id: productId,
+				quantity: productQuantity,
+			});
+			if (error) {
+				console.log(error);
+				return null;
+			}
+		}
+
 		const button = document.querySelector(`.price_btn[data-id="${productId}"]`);
 		button.disabled = false;
 		button.textContent = "Удалить из корзины";
 		button.removeEventListener("click", addToCart);
 		button.addEventListener("click", () => removeFromCart($page.data.dbUser.data.id, id));
 	}
+
 
 	// Функция удаления товара из корзины
 	async function removeFromCart(userId, productId) {
@@ -82,6 +132,25 @@
 		button.textContent = `${price} ₽`;
 		button.removeEventListener("click", removeFromCart);
 		button.addEventListener("click", () => addToCart(userId, productId));
+	}
+
+	async function getSavedQuantity(userId, productId) {
+		const { data, error } = await supabase
+			.from("cart_item")
+			.select()
+			.eq("user_id", userId)
+			.eq("product_id", productId);
+		if (error) {
+			console.log(error);
+			return 1;
+		}
+		return data.length > 0 ? data[0].quantity : 1;
+	}
+
+	if ($page.data.dbUser) {
+		getSavedQuantity($page.data.dbUser.data.id, id).then((quantity) => {
+			productQuantity = quantity;
+		});
 	}
 
 	async function removeFromFavorites(userId, productId) {
@@ -110,12 +179,29 @@
 		}
 		return data.length > 0;
 	}
+
+
+	async function updateProductQuantity(change) {
+		productQuantity += change;
+		if (productQuantity < 1) {
+			productQuantity = 1;
+		}
+		const { error } = await supabase
+			.from("cart_item")
+			.update({ quantity: productQuantity })
+			.eq("user_id", $page.data.dbUser.data.id)
+			.eq("product_id", id);
+		if (error) {
+			console.log(error);
+			return null;
+		}
+	}
 </script>
 
 <div class="container">
-	<img src={image_url} alt="Product Image" />
+	<img src={image_url} alt="Product Image" class="img-product" />
 	<div class="over_pic">
-		<p class="count">{count} шт.</p>
+		{#if count && count > 0}<p class="count">{count} шт.</p>{/if}
 		<p class="count">{category.title}</p>
 	</div>
 	<div class="card_inner">
@@ -123,7 +209,10 @@
 			<p class="title">{title}</p>
 			<p class="weight">{weight} гр.</p>
 		</div>
-		<p class="description">{description}</p>
+		<div class="tooltip">
+			<p class="description">{description}</p>
+			<span class="tooltiptext">{description}</span>
+		</div>
 	</div>
 	{#if $page.data.dbUser}
 		{#await setFavStatus() then _}
@@ -153,6 +242,13 @@
 			>
 				{isInCart ? "Удалить из корзины" : `${price} ₽`}
 			</button>
+			<div class="productQuantity">
+				{#if isInCart}
+					<button on:click={() => updateProductQuantity(-1)} class="quantity">&lt;</button>
+					<span>{productQuantity}</span>
+					<button on:click={() => updateProductQuantity(1)} class="quantity">&gt;</button>
+				{/if}
+			</div>
 		{/await}
 	{/if}
 </div>
@@ -167,11 +263,24 @@
 		margin-bottom: 67px;
 		margin-right: 140px;
 
-		width: 318px;
+		width: 322px;
+
 
 		background: #FFFFFF;
 		box-shadow: 0 12px 21px rgba(0, 0, 0, 0.25);
 		border-radius: 18px;
+
+
+	}
+	.img-product{
+		width: 322px;
+		height: 240px;
+	}
+	.description {
+		white-space: nowrap; /* Запрещаем перенос строк */
+		overflow: hidden; /* Обрезаем все, что не помещается в область */
+		padding: 5px; /* Поля вокруг текста */
+		text-overflow: ellipsis; /* Добавляем многоточие */
 	}
 
 	.card_inner {
@@ -180,6 +289,52 @@
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
+	}
+	.tooltip {
+		position: relative;
+		display: inline-block;
+	}
+
+	.tooltip .tooltiptext {
+		visibility: hidden;
+		width: 220px;
+		background-color: #555;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px;
+		position: absolute;
+		z-index: 1;
+		bottom: 105%; /* позиция подсказки над элементом */
+		left: 50%;
+		margin-left: -120px;
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+	.tooltip:hover .tooltiptext {
+		visibility: visible;
+		opacity: 1;
+	}
+	.productQuantity{
+		display: flex;
+		font-style: normal;
+		font-weight: 900;
+		font-size: 22px;
+		padding-top: 10px;
+		padding-left: 20px;
+
+		span{
+			display: flex;
+			align-items: center;
+		}
+	}
+	.quantity{
+		background: white;
+		font-size: 28px;
+	}
+	.quantity:hover{
+		background: white;
 	}
 
 	.title_bar {
@@ -214,7 +369,7 @@
 	}
 
 	.title {
-		font-size: 24px;
+		font-size: 20px;
 		color: black;
 	}
 
