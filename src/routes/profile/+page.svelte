@@ -175,9 +175,9 @@
 				<div class="personal-desc">
 					<img src="icons/ui/message.svg" alt="">{user.email}
 				</div>
-				<div class="personal-desc">
-					<img src="icons/ui/call.svg" alt="">{user.phone}
-				</div>
+<!--				<div class="personal-desc">-->
+<!--					<img src="icons/ui/call.svg" alt="">{user.phone}-->
+<!--				</div>-->
 				<div class="btn"><button on:click={swapPopup}>Изменить</button></div>
 				<PopUp class="personal" {isOpen} on:close={swapPopup}>
 					<main>
@@ -220,34 +220,34 @@
 									/>
 								</p>
 							</div>
-							<div class="field">
-								<label for="email" class="label"><img src="icons/ui/message.svg" alt=""></label>
-								<p class="control">
-									<input
-										id="email"
-										name="email"
-										value={form?.values?.email ?? ''}
-										class="input"
-										type="email"
-										placeholder="email"
-										required
-									/>
-								</p>
-							</div>
-							<div class="field">
-								<label for="phone" class="label"><img src="icons/ui/call.svg" alt=""></label>
-								<p class="control">
-									<input
-										id="phone"
-										name="phone"
-										value={form?.values?.phone ?? ''}
-										class="input"
-										type="text"
-										placeholder="phone"
-										required
-									/>
-								</p>
-							</div>
+<!--							<div class="field">-->
+<!--								<label for="email" class="label"><img src="icons/ui/message.svg" alt=""></label>-->
+<!--								<p class="control">-->
+<!--									<input-->
+<!--										id="email"-->
+<!--										name="email"-->
+<!--										value={form?.values?.email ?? ''}-->
+<!--										class="input"-->
+<!--										type="email"-->
+<!--										placeholder="email"-->
+<!--										required-->
+<!--									/>-->
+<!--								</p>-->
+<!--							</div>-->
+<!--							<div class="field">-->
+<!--								<label for="phone" class="label"><img src="icons/ui/call.svg" alt=""></label>-->
+<!--								<p class="control">-->
+<!--									<input-->
+<!--										id="phone"-->
+<!--										name="phone"-->
+<!--										value={form?.values?.phone ?? ''}-->
+<!--										class="input"-->
+<!--										type="text"-->
+<!--										placeholder="phone"-->
+<!--										required-->
+<!--									/>-->
+<!--								</p>-->
+<!--							</div>-->
 							<div class="field">
 								<input
 									type="submit"
@@ -317,7 +317,7 @@
 							{/if}
 						</ul>
 				{/if}
-				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>
+<!--				<button><img src="icons/ui/credit.svg" alt=""> *** 4532</button>-->
 				<div class="address">
 						{#each userProfile.userAddresses as address }
 							<div class="address-contaner">
