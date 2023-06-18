@@ -1,6 +1,6 @@
 <script>
 	export let data;
-	const { user, userProfile, session, supabase, delivery_address, userFavorite } = data;
+	const { user, userProfile, session, supabase, delivery_address, userFavorite,userOrder } = data;
 
 	async function removeFromCart(item) {
 		const index = userProfile.userCart.findIndex(cartItem => cartItem.id === item.id);
@@ -37,6 +37,17 @@
 			console.log('Error updating item:', error);
 		} else {
 			console.log('Updated item:', data);
+		}
+	}
+	const deliveryNote = ""
+	async function createOrder(userId) {
+		const { data, error } = await supabase
+			.from("order")
+			.insert([{ user_id: userId, delivery_note: deliveryNote, total_price: getTotalPrice() }]);
+		if (error) {
+			console.log('Error creating order:', error);
+		} else {
+			console.log('Created order:', data);
 		}
 	}
 
@@ -78,6 +89,9 @@
 				</div>
 			{/each}
 			<p class="total-price">Общая цена: {getTotalPrice()}руб.</p>
+			<a href="/order">
+				<button on:click={() => createOrder(userProfile.userInfo.id)}>Оформить заказ</button>
+			</a>
 		</div>
 		<div class="container-profile">
 			<div class="profile-card">

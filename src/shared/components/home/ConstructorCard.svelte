@@ -79,4 +79,43 @@
 			padding: 20px;
 		}
 	}
+
+
+	@media (max-width: 768px) {
+		div {
+			flex-direction: row;
+			align-items: flex-end;
+			justify-content: space-between;
+			height: 500px;
+
+			h5 {
+				font-size: 36px;
+				padding: 36px;
+				text-align: right;
+				width: 80%;
+			}
+
+			p {
+				font-size: 28px;
+				padding: 36px;
+			}
+
+			.description {
+				height: 140px;
+
+				&:hover {
+					height: 180px;
+				}
+			}
+
+			button {
+				height: 60px;
+
+				p {
+					padding: 20px;
+					font-size: 20px;
+				}
+			}
+		}
+	}
 </style>

@@ -94,8 +94,8 @@
 					<h1>Конструктор</h1>
 					<img src="image/constructor.jpg" alt="">
 					<h2>WOK-лапша</h2>
-					<p>Основа из моркови, болгарского перца, <br>
-						грибов, цукини и стручковой фасоли. </p>
+					<h4>Основа из моркови, болгарского перца, <br>
+						грибов, цукини и стручковой фасоли. </h4>
 					<h3>Лапша/Рис</h3>
 					<form>
 						<input type="radio" name="type" value="Лапша" checked> Лапша<br>
@@ -120,8 +120,8 @@
 					<h1>Конструктор</h1>
 					<img src="image/constructor.jpg" alt="">
 					<h2>WOK-лапша</h2>
-					<p>Основа из моркови, болгарского перца, <br>
-						грибов, цукини и стручковой фасоли. </p>
+					<h4>Основа из моркови, болгарского перца, <br>
+						грибов, цукини и стручковой фасоли. </h4>
 					<h3>Лапша/Рис</h3>
 					<form>
 						<input type="radio" name="type" value="Лапша" checked> Лапша<br>
@@ -135,7 +135,8 @@
 	<div id="menu">
 		<div class="menu_heading">
 			<SectionHeading title="Меню" icon="icons/ui/menu.svg" --font-size="36px"/>
-			<Filter filterItems={filterItems} onFilter={onFilter}/>
+			<div class="filter"><Filter  filterItems={filterItems} onFilter={onFilter}/></div>
+
 		</div>
 		<div class="food_items_container">
 			{#if filteredProducts.length === 0}
@@ -180,6 +181,7 @@
 		display: flex;
 		justify-content: space-between;
 	}
+
 
 	.cont {
 		display: flex;
@@ -301,6 +303,97 @@
 
 	#menu,  {
 		scroll-margin-top: 40px;
+	}
+
+	@media (max-width: 768px) {
+		.filter {
+			flex-direction: column;
+			gap: 30px;
+			margin-bottom: 30px;
+			overflow-x: auto;
+		}
+
+		.food_items_container {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 768px) {
+		section {
+			gap: 30px;
+		}
+
+		.personal{
+			h1,h2,h3{
+				font-size: 20px;
+			}
+			p{
+				font-size: 16px;
+			}
+		}
+
+		.section {
+			flex-direction: column;
+			gap: 30px;
+		}
+
+		.cont {
+			gap: 20px;
+
+			p {
+				font-size: 24px;
+			}
+		}
+
+		.callout {
+			font-size: 36px;
+		}
+
+		.cont-plus {
+			gap: 20px;
+			justify-content: space-between;
+			padding-top: 0;
+		}
+
+		.container-link {
+			width: 300px;
+		}
+
+		.container-menu {
+			width: 250px;
+		}
+
+		.card-plus {
+			gap: 20px;
+			padding: 10px 16px;
+
+			p {
+				font-size: 14px;
+			}
+		}
+
+		.bg_pic {
+			display: none;
+		}
+
+		.contstructors {
+			flex-direction: column;
+			gap: 30px;
+
+			p {
+				font-size: 60px;
+			}
+		}
+
+		.menu_heading {
+			flex-direction: column;
+			gap: 30px;
+			margin-bottom: 30px;
+		}
+
+		.food_items_container {
+			width: 100%;
+		}
 	}
 </style>
 

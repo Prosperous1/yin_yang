@@ -18,7 +18,7 @@
 				</ul>
 				<ul>
 					<li>
-						<a href="/contacts">Контакты</a>
+						<a href="/contact">Контакты</a>
 					</li>
 				</ul>
 			</nav>
@@ -130,5 +130,31 @@
 		justify-content: space-between;
 
 		padding: 16px 42px;
+	}
+
+
+
+	@media (max-width: 480px) {
+		.container {
+			flex-direction: column;
+			padding: 20px;
+		}
+		nav {
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.contacts_container {
+			margin: 20px 0;
+			text-align: center;
+		}
+
+		.qr_container {
+			margin: 20px 0;
+		}
+
+		.social_container {
+			justify-content: center;
+		}
 	}
 </style>

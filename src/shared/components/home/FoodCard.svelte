@@ -271,6 +271,14 @@
 		border-radius: 18px;
 
 
+		@media (max-width: 768px) {
+			width: 90%;
+			display: flex;
+			margin-right: auto;
+			margin-left: auto;
+		}
+
+
 	}
 	.img-product{
 		width: 322px;
@@ -423,7 +431,12 @@
 		border-radius: 18px;
 
 		color: white;
-		font-size: 22px;
+		font-size: 20px;
+
+		@media (max-width: 768px) {
+			padding: 12px 60px;
+			font-size: 18px;
+		}
 	}
 	img{
 		border-radius: 16px 16px 0px 0px;
@@ -438,7 +451,48 @@
 			background: rgba(0, 0, 0, 0.85);
 		}
 	}
+	.img-product {
+		width: 100%;
+		height: auto;
+	}
 
+	.title_bar {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+
+		@media (max-width: 768px) {
+			flex-direction: column;
+		}
+	}
+
+	.productQuantity {
+		display: flex;
+		font-style: normal;
+		font-weight: 900;
+		font-size: 22px;
+		padding-top: 10px;
+		padding-left: 20px;
+
+		span {
+			display: flex;
+			align-items: center;
+		}
+
+		@media (max-width: 768px) {
+			padding-left: 0;
+			justify-content: center;
+		}
+	}
+
+	.quantity {
+		background: white;
+		font-size: 28px;
+	}
+
+	.quantity:hover {
+		background: white;
+	}
 	.delete-btn {
 		background-color: rgba(168, 26, 26, 0.93);
 		bottom: 0;
@@ -449,5 +503,10 @@
 		border-radius: 18px;
 		font-size: 22px;
 		cursor: pointer;
+
+		@media (max-width: 768px) {
+			padding: 12px 40px;
+			font-size: 18px;
+		}
 	}
 </style>

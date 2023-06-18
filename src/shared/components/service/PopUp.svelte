@@ -40,7 +40,7 @@
 	</div>
 {/if}
 
-<style>
+<style lang="scss">
 	.popup-backdrop {
 		background-color: rgba(0, 0, 0, 0.5);
 		position: fixed;
@@ -52,8 +52,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		@media (max-width: 768px) {
+			padding: 0 1rem;
+		}
 	}
-
 	.popup {
 		display: flex;
 		flex-direction: column;
@@ -62,8 +64,12 @@
 		border-radius: 0.5rem;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		position: relative;
+		@media (max-width: 768px) {
+			max-width: 90%;
+			max-height: 90%;
+			overflow-y: auto;
+		}
 	}
-
 	.popup-close {
 		position: absolute;
 		top: 0.5rem;
@@ -73,5 +79,10 @@
 		font-size: 2rem;
 		cursor: pointer;
 		padding: 0;
+		@media (max-width: 768px) {
+			top: 0.25rem;
+			right: 0.25rem;
+			font-size: 1.5rem;
+		}
 	}
 </style>

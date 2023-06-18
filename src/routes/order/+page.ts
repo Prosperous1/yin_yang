@@ -58,16 +58,29 @@ export const load: PageLoad = async ({ parent }) => {
 		.select("*, product_id(*, category_id(title))")
 		.eq('user_id', [userInfo.id])
 
+	let {data: userOrderitem} = await supabase
+		.from('order_item')
+		.select("*, product_id")
+		.eq(
+			'user_id',
+			[userInfo.id]
+		)
+
+
 	let {data: userOrder} = await supabase
 		.from('order')
 		.select("*, user_id")
-		.eq('user_id', [userInfo.id])
+		.eq(
+			'user_id',
+			[userInfo.id]
+		)
 
 	const userProfile = {
 		userInfo: userInfo,
 		userAddresses: userAddresses,
 		userFavorite: userFavorite,
 		userCart: userCart,
+		userOrderitem: userOrderitem,
 		userOrder:userOrder
 	}
 

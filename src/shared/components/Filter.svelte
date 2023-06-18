@@ -33,5 +33,11 @@
 			box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.05);
 			background: #bbbbbb;
 		}
+		@media (max-width: 767px) {
+			font-size: 16px;
+			padding: 8px 16px;
+			flex-direction: row;
+		}
 	}
+
 </style>
