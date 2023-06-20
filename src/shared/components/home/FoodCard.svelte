@@ -415,7 +415,6 @@
 	}
 
 	.description {
-		display: flex;
 		font-size: 18px;
 
 		color: rgba(0, 0, 0, 0.6);
