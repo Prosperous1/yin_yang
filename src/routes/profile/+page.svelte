@@ -63,6 +63,12 @@
 
 
 	let loading = false;
+	async function fetchDataFromDatabase() {
+		// Fetch data from the database
+		// Update the relevant variables with the fetched data
+		firstName = fetchedData.firstName;
+	}
+	// Call this function after a successful update
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
 		return async ({ result }) => {
@@ -72,12 +78,12 @@
 				await applyAction(result);
 			}
 			loading = false;
+			swapPopup(); // Close the popup
 			// Обновляем данные пользователя
 			firstName = result.values.first_name;
 			lastName = result.values.last_name;
-			email = result.values.email;
-			phone = result.values.phone;
-			swapPopup()
+			// Fetch data from the database
+			fetchDataFromDatabase();
 		};
 	};
 	async function removeAddress(address) {
