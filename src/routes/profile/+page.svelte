@@ -144,9 +144,6 @@
 				<div class="card-progress">
 					<button> <img src="icons/ui/archive.svg" alt=""> Заказы</button>
 				</div>
-				<div class="card-progress">
-					<button><img src="icons/ui/heart.svg" alt=""> Любимое</button>
-				</div>
 			</div>
 		</div>
 		<div class="favorite-wrapper">
@@ -331,7 +328,7 @@
 	</div>
 
 	<form action="/logout" method="post" use:enhance={handleSignOut}>
-		<button disabled={loading} type="submit" class="logout-btn">Sign out</button>
+		<button disabled={loading} type="submit" class="logout-btn">Выход</button>
 	</form>
 </section>
 
@@ -369,6 +366,7 @@
 		background: none;
 		color: #5d5959;
 		padding: 20px 10pc 0px 10px;
+		transition: color 0.3s;
 	}
 	.logout-btn:hover{
 		color: red;

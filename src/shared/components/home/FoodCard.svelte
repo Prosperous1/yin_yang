@@ -235,19 +235,21 @@
 			{/if}
 		{/await}
 		{#await setCartStatus() then _}
-			<button
-				class="{isInCart ? 'price_btn delete-btn' : 'price_btn'}"
-				data-id="{id}"
-				on:click={() => toggleCart($page.data.dbUser.data.id, id)}
-			>
-				{isInCart ? "Удалить из корзины" : `${price} ₽`}
-			</button>
-			<div class="productQuantity">
-				{#if isInCart}
-					<button on:click={() => updateProductQuantity(-1)} class="quantity">&lt;</button>
-					<span>{productQuantity}</span>
-					<button on:click={() => updateProductQuantity(1)} class="quantity">&gt;</button>
-				{/if}
+			<div class="cart-status">
+				<button
+					class="{isInCart ? 'price_btn delete-btn' : 'price_btn'}"
+					data-id="{id}"
+					on:click={() => toggleCart($page.data.dbUser.data.id, id)}
+				>
+					{isInCart ? "Удалить из корзины" : `${price} ₽`}
+				</button>
+				<div class="productQuantity">
+					{#if isInCart}
+						<button on:click={() => updateProductQuantity(-1)} class="quantity">&lt;</button>
+						<span>{productQuantity}</span>
+						<button on:click={() => updateProductQuantity(1)} class="quantity">&gt;</button>
+					{/if}
+				</div>
 			</div>
 		{/await}
 	{/if}
@@ -275,15 +277,29 @@
 			width: 90%;
 			height: 30%;
 			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
 			margin-right: auto;
 			margin-left: auto;
+			padding-bottom: 0;
+
+			box-shadow: none;
 		}
 
 
 	}
-	.img-product{
+	.img-product {
 		width: 322px;
-		height: 240px;
+		height: 200px;
+		object-fit: cover;
+		border-radius: 16px 16px 0px 0px;
+
+		@media (max-width: 768px) {
+			width: 100%;
+			height: 200px;
+			display: flex;
+		}
+
 	}
 	.description {
 		white-space: nowrap; /* Запрещаем перенос строк */
@@ -298,6 +314,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
+
+		@media (max-width: 768px) {
+			width: 50%;
+			height: 100%;
+			padding: 20px 0px 0px;
+		}
 	}
 	.tooltip {
 		position: relative;
@@ -350,6 +372,11 @@
 		display: flex;
 		align-items: center;
 		gap: 16px;
+
+		@media (max-width: 768px) {
+			display: flex;
+
+		}
 	}
 
 	p {
@@ -402,15 +429,29 @@
 		padding: 5px 8px;
 		width: 15%;
 
+
+			background: #030303;
+
+			transition: .3s;
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.85);
+			}
+
+
 		border-radius: 10px;
 
 		@media (max-width: 768px) {
 			width: 20%;
+			height: 20%;
+			margin-top: 90px;
+			margin-bottom: 29px;
+			margin-left: 60px;
 		}
 	}
 	.unlike_btn{
 		margin-left: 24px;
-		padding: 5px 14px;
+		padding: 6px 9px;
 		width: 15%;
 		height: 45px;
 
@@ -424,6 +465,9 @@
 
 		@media (max-width: 768px) {
 			width: 20%;
+			margin-top: 90px;
+			margin-bottom: 40px;
+			padding: 6px 9px 4px 15px;
 		}
 	}
 
@@ -440,36 +484,44 @@
 		color: white;
 		font-size: 20px;
 
+
+			background: #030303;
+
+			transition: .3s;
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.85);
+			}
+
+
 		@media (max-width: 768px) {
-			padding: 12px 60px;
+			position: static;
 			font-size: 18px;
+			width: 100%;
+			box-sizing: border-box;
+
+
+				background: #030303;
+
+				transition: .3s;
+
+				&:hover {
+					background: rgba(0, 0, 0, 0.85);
+				}
+
+
 		}
 	}
 	img{
 		border-radius: 16px 16px 0px 0px;
 	}
 
-	button {
-		background: #030303;
 
-		transition: .3s;
-
-		&:hover {
-			background: rgba(0, 0, 0, 0.85);
-		}
-	}
-	.img-product {
-		width: 100%;
-		height: auto;
-	}
-
-	.title_bar {
+	.cart-status{
 		display: flex;
-		align-items: center;
-		gap: 16px;
 
 		@media (max-width: 768px) {
-			flex-direction: column;
+			flex-direction: column-reverse;
 		}
 	}
 
@@ -503,17 +555,18 @@
 	.delete-btn {
 		background-color: rgba(168, 26, 26, 0.93);
 		bottom: 0;
-		padding: 20px 60px;
 		color: white;
 		border: none;
 		width: 100%;
 		border-radius: 18px;
+		padding: 22px 40px;
 		font-size: 22px;
 		cursor: pointer;
 
 		@media (max-width: 768px) {
-			padding: 12px 40px;
+			padding: 22px 60px;
 			font-size: 18px;
+			background-color: rgba(168, 26, 26, 0.93);
 		}
 	}
 </style>
