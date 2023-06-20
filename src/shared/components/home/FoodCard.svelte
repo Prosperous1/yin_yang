@@ -273,6 +273,7 @@
 
 		@media (max-width: 768px) {
 			width: 90%;
+			height: 30%;
 			display: flex;
 			margin-right: auto;
 			margin-left: auto;
@@ -402,12 +403,14 @@
 		width: 15%;
 
 		border-radius: 10px;
+
+		@media (max-width: 768px) {
+			width: 20%;
+		}
 	}
 	.unlike_btn{
-		bottom: 95px;
-		left: 24px;
 		margin-left: 24px;
-		padding: 5px 8px;
+		padding: 5px 14px;
 		width: 15%;
 		height: 45px;
 
@@ -417,6 +420,10 @@
 		img{
 			width: 60px;
 			height: 60px;
+		}
+
+		@media (max-width: 768px) {
+			width: 20%;
 		}
 	}
 

@@ -126,4 +126,15 @@
 		background-color: #3498db;
 		color: #ffffff;
 	}
+
+
+	@media only screen and (max-width: 768px) {
+		form {
+			max-width: 100%;
+			padding: 1rem;
+		}
+		.input, .button {
+			font-size: 1rem;
+		}
+	}
 </style>

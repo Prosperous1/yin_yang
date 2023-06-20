@@ -44,6 +44,13 @@
 	.container{
 		display: flex;
 		justify-content: space-between;
+
+		@media (max-width: 768px) {
+			display: flex;
+			flex-direction: column;
+			gap: 30px;
+
+		}
 	}
 
 	.social_btns {
@@ -76,6 +83,19 @@
 		p{
 			color: white;
 			font-size: 20px;
+		}
+	}
+	@media (max-width: 768px) {
+
+		.container-link {
+			width: 295px;
+		}
+		.social_btns{
+			flex-direction: row;
+		}
+		.contact_btns {
+			flex-direction: column;
+			gap: 30px;
 		}
 	}
 </style>

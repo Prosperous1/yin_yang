@@ -613,4 +613,39 @@
 			font-size: 24px;
 		}
 	}
+
+
+	@media (max-width: 768px) {
+		.section {
+			gap: 30px;
+		}
+
+		.card-prof-up {
+			flex-direction: column;
+			align-items: center;
+			gap: 20px;
+			padding: 20px;
+		}
+
+
+		.card-btn {
+			justify-content: center;
+			gap: 20px;
+		}
+
+		.card-prof-low {
+			flex-direction: column;
+			align-items: center;
+			gap: 30px;
+		}
+
+		.favorite-container {
+			overflow-x: scroll;
+		}
+
+		.favorite-card {
+			min-width: 400px;
+		}
+	}
+
 </style>

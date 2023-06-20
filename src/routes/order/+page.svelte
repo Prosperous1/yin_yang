@@ -4,6 +4,7 @@
 
 	let delivery_address;
 	let delivery_note;
+	let orderSubmitted = false;
 
 	function getTotalPrice() {
 		let totalPrice = 0;
@@ -13,31 +14,63 @@
 		return totalPrice;
 	}
 
-	async function updateOrder(userId) {
-		const { data: order, error } = await supabase
+	async function updateOrder(userId, statusId) {
+		// Fetch the latest existing order using the user_id
+		const { data: existingOrders, error: fetchError } = await supabase
 			.from('order')
-			.insert([{ user_id: userId, delivery_address: delivery_address, delivery_note: delivery_note, total_price: getTotalPrice() }])
-			.single();
-
-		if (error) {
-			console.log(error);
+			.select('*')
+			.eq('user_id', userId)
+			.order('created_at', { ascending: false })
+			.limit(1);
+		if (fetchError) {
+			console.log('Error fetching order:', fetchError);
 			return;
 		}
-
-		console.log(order);
-
-		// Clear the cart items after the order is created
-		const { data: deletedData, error: deleteError } = await supabase.from('cart_item').delete().match({ user_id: userId });
-		if (deleteError) {
-			console.log('Error deleting cart items:', deleteError);
+		const existingOrder = existingOrders[0];
+		if (existingOrder) {
+			// Update the existing order with new data
+			const { data: updatedOrder, error: updateError } = await supabase
+				.from('order')
+				.update({
+					delivery_address: delivery_address,
+					delivery_note: delivery_note,
+					total_price: getTotalPrice(),
+					status_id: statusId,
+				})
+				.eq('id', existingOrder.id)
+				.single();
+			if (updateError) {
+				console.log('Error updating order:', updateError);
+			} else {
+				console.log('Updated order:', updatedOrder);
+				orderSubmitted = true;
+			}
 		} else {
-			console.log('Deleted cart items:', deletedData);
-			userProfile.userCart = []; // Clear the userCart in the userProfile
+			// If no existing order, create a new one
+			const { data: newOrder, error: insertError } = await supabase
+				.from('order')
+				.insert([
+					{
+						user_id: userId,
+						delivery_address: delivery_address,
+						delivery_note: delivery_note,
+						total_price: getTotalPrice(),
+						status_id: statusId,
+					},
+				])
+				.single();
+			if (insertError) {
+				console.log('Error creating new order:', insertError);
+			} else {
+				console.log('Created new order:', newOrder);
+				orderSubmitted = true;
+			}
 		}
+
 	}
 </script>
 
-
+{#if !orderSubmitted}
 <section>
 	<h1>Оформление заказа</h1>
 	<div class="cart-section">
@@ -63,10 +96,17 @@
 			<label for="delivery-note">Комментарий к доставке</label>
 			<input type="text" id="delivery-note" bind:value={delivery_note}>
 			<p class="total-price">{getTotalPrice()}руб.</p>
-			<button on:click={() => updateOrder(userProfile.userInfo.id)}>Сформировать заказ</button>
+			<button on:click={() => updateOrder(userProfile.userInfo.id, 1)}>Сформировать заказ</button>
 		</div>
 	</div>
 </section>
+{:else} <!-- Add this line -->
+	<div class="finish-container">
+		<p class="finish-txt">Ваш заказ успешно создан!</p>
+		<a href="/#menu"><button class="menu-btn">Вернуться в меню</button></a>
+	</div>
+
+{/if} <!-- Add this line -->
 
 <style lang="scss">
 	section {
@@ -159,6 +199,38 @@
 			border-radius: 5px;
 			border: 2px solid #ccc;
 			margin-bottom: 20px;
+		}
+	}
+
+	.finish-container{
+		display: flex;
+		flex-direction: column;
+		height: 400px;
+	}
+	.finish-txt {
+		padding-top: 120px;
+		font-size: 24px;
+		font-weight: bold;
+		color: #333;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	.menu-btn {
+		display: block;
+		margin: 0 auto;
+		padding: 10px 20px;
+		background-color: #E44857;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		font-size: 18px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: background-color 0.3s ease-in-out;
+
+		&:hover {
+			background-color: #d04451;
 		}
 	}
 </style>

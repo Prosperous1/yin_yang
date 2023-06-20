@@ -40,10 +40,10 @@
 		}
 	}
 	const deliveryNote = ""
-	async function createOrder(userId) {
+	async function createOrder(userId,statusId) {
 		const { data, error } = await supabase
 			.from("order")
-			.insert([{ user_id: userId, delivery_note: deliveryNote, total_price: getTotalPrice() }]);
+			.insert([{ user_id: userId, delivery_note: deliveryNote, total_price: getTotalPrice(), status_id: statusId  }]);
 		if (error) {
 			console.log('Error creating order:', error);
 		} else {
@@ -80,17 +80,19 @@
 						<p>{item.product_id.weight}гр.</p>
 						<h4>{item.product_id.price}руб.</h4>
 					</div>
-					<div class="quantity">
-						<button on:click={() => decreaseQuantity(item)} class="quantity">&lt;</button>
-						<span>{item.quantity}</span>
-						<button on:click={() => increaseQuantity(item)} class="quantity">&gt;</button>
+					<div class="btn">
+						<div class="quantity">
+							<button on:click={() => decreaseQuantity(item)} class="quantity">&lt;</button>
+							<span>{item.quantity}</span>
+							<button on:click={() => increaseQuantity(item)} class="quantity">&gt;</button>
+						</div>
+						<button on:click={() => removeFromCart(item)}  class="remove-btn">Удалить</button>
 					</div>
-					<button on:click={() => removeFromCart(item)}>Удалить</button>
 				</div>
 			{/each}
 			<p class="total-price">Общая цена: {getTotalPrice()}руб.</p>
 			<a href="/order">
-				<button on:click={() => createOrder(userProfile.userInfo.id)}>Оформить заказ</button>
+				<button class="order-btn" on:click={() => createOrder(userProfile.userInfo.id, 1)}>Оформить заказ</button>
 			</a>
 		</div>
 		<div class="container-profile">
@@ -124,8 +126,29 @@
 
 	.cart-section{
 		display: flex;
-		flex-direction: row;
 		gap: 65px;
+	}
+	.btn{
+		padding-top: 30px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+	}
+
+	.order-btn{
+		background-color: #E44857;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
+		padding: 10px 20px;
+		font-size: 16px;
+		cursor: pointer;
+		transition: background-color 0.3s ease-in-out;
+		margin-top: 20px;
+
+		&:hover {
+			background-color: #d04451;
+		}
 	}
 
 	.cart-container{
@@ -177,6 +200,106 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		background-color: #000000;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
+		padding: 5px 10px;
+		font-size: 14px;
+		cursor: pointer;
 		gap: 10px;
+	}
+	.remove-btn {
+		background-color: #E44857;
+		color: #ffffff;
+		border: none;
+		border-radius: 5px;
+		padding: 5px 10px;
+		font-size: 14px;
+		cursor: pointer;
+		margin-left: 10px;
+		&:hover {
+			background-color: #d04451;
+		}
+	}
+	 .card-up-desc{
+		 display: flex;
+		 flex-direction: column;
+		 padding-left: 10px;
+	 }
+
+
+
+	@media (max-width: 768px) {
+		.cart-section{
+			display: flex;
+			flex-direction: column-reverse;
+			gap: 20px;
+		}
+
+		.btn{
+			display: flex;
+			flex-direction: column;
+			align-content: center;
+			padding-top: 38px;
+			gap: 20px;
+		}
+
+		.profile-card{
+			width: 100%;
+			height: 20%;
+			display: flex;
+			flex-direction: column;
+			padding: 40px;
+		}
+		.remove-btn{
+			margin-right: 20px;
+		}
+
+		.cart-container{
+			min-width: auto;
+			margin-right: 20px;
+			box-shadow: none;
+		}
+
+		.container-profile{
+			width: 40%;
+		}
+
+		.cart-card{
+			flex-direction: row;
+			align-items: flex-start;
+
+			box-shadow: none;
+			height: 20%;
+			margin: 0;
+			padding: 0;
+			p,h1,h2{
+				font-size: 16px;
+			}
+
+			img{
+				width: 120px;
+				height: 120px;
+				padding-top: 20px;
+				margin-right: 10px;
+			}
+		}
+
+
+
+		.quantity {
+			gap: 5px;
+			margin-right: 5px;
+		}
+
+		.total-price{
+			font-size: 22px;
+			margin-top: 0;
+		}
+
+		button {
+			margin-top: 0;
+		}
 	}
 </style>
