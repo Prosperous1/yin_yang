@@ -105,7 +105,7 @@
 				</main>
 			</PopUp>
 
-			<p>&</p>
+			<p class="and_sign">&</p>
 
 			<button class="btn-construct" on:click={swapPopup}>
 			<ConstructorCard
@@ -171,6 +171,9 @@
 </section>
 
 <style lang="scss">
+	.and_sign {
+		text-shadow: 0 4px 6px rgba(0, 0, 0, 0.45) !important;
+	}
 	section {
 		display: flex;
 		flex-direction: column;
@@ -225,6 +228,7 @@
 		display: flex;
 		align-items: center;
 		gap: 35px;
+		padding-right: 16px;
 		width: 363px;
 		height: 69px;
 		background: #000000;

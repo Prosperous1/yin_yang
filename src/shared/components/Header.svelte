@@ -57,6 +57,7 @@
 	.sub_header_container {
 		display: flex;
 		gap: 32px;
+		align-items: baseline;
 		@media (max-width: 768px) {
 			flex-direction: column;
 			gap: 10px;
